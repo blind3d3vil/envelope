@@ -26,38 +26,38 @@ jobs:
 
       - name: Create config.js
         run: |
-          cat > js/config.js << 'EOL'
-          const CONFIG = {
-            hasPasscode: true,
-            passcodeType: "number",
-            passcode: {
-              value: ${{ secrets.PASSCODE }},
-              placeholder: "Enter number...",
-              errorMessage: "Try again!"
-            },
-            letter: {
-              title: "My Love Letter",
-              paragraphs: [
-                "Dear love...",
-                "You mean everything to me...",
-                "Forever yours..."
-              ],
-              signature: {
-                text: "With all my love,",
-                name: "Your Secret Admirer"
+          echo '(function(window) {
+            const CONFIG = {
+              hasPasscode: true,
+              passcodeType: "number",
+              passcode: {
+                value: ${{ secrets.PASSCODE }},
+                placeholder: "Enter number...",
+                errorMessage: "Try again!"
+              },
+              letter: {
+                title: "My Love Letter",
+                paragraphs: [
+                  "Dear love...",
+                  "You mean everything to me...",
+                  "Forever yours..."
+                ],
+                signature: {
+                  text: "With all my love,",
+                  name: "Your Secret Admirer"
+                }
+              },
+              ui: {
+                title: "Enter Secret Code",
+                submitButton: "Open Letter",
+                closeButton: "×"
               }
-            },
-            ui: {
-              title: "Enter Secret Code",
-              submitButton: "Open Letter",
-              closeButton: "×"
-            }
-          };
+            };
 
-          window.getConfig = function() {
-            return CONFIG;
-          };
-          EOL
+            window.getConfig = function() {
+              return CONFIG;
+            };
+          })(window);' > js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
