@@ -223,81 +223,20 @@
 
 .heart {
   position: absolute;
-  z-index: 4;
-  left: 50%;
   top: 90px;
-  transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
-  background-color: var(--heart-color);
-  transform-origin: center;
+  left: 50%;
+  width: 36px;
+  height: 36px;
+  background: #ff3838;
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: 3;
+  animation: heartbeat 1.4s linear infinite;
   cursor: pointer;
-  animation: pulse 0.75s infinite;
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.heart::before,
-.heart::after {
-  content: "";
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background-color: var(--heart-color);
-  border-radius: 50%;
-  transform-origin: center;
-}
-
-.heart::before {
-  left: -20px;
-}
-
-.heart::after {
-  top: -20px;
-}
-
-/* Mobile-specific heart styles */
-@media screen and (max-width: 768px) {
-  .heart {
-    width: 35px;
-    height: 35px;
-    top: 85px;
-  }
-
-  .heart::before,
-  .heart::after {
-    width: 35px;
-    height: 35px;
-  }
-
-  .heart::before {
-    left: -17.5px;
-  }
-
-  .heart::after {
-    top: -17.5px;
-  }
-}
-
-@media screen and (max-width: 480px) {
-  .heart {
-    width: 30px;
-    height: 30px;
-    top: 80px;
-  }
-
-  .heart::before,
-  .heart::after {
-    width: 30px;
-    height: 30px;
-  }
-
-  .heart::before {
-    left: -15px;
-  }
-
-  .heart::after {
-    top: -15px;
-  }
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .envelope.open .heart {
@@ -307,15 +246,45 @@
   transition: opacity 0.1s ease, visibility 0s linear;
 }
 
-@keyframes pulse {
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  background: #ff3838;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.heart::before {
+  top: -18px;
+  left: 0;
+}
+
+.heart::after {
+  left: -18px;
+  top: 0;
+}
+
+@keyframes heartbeat {
   0% {
-    transform: scale(1);
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+  }
+  25% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+  }
+  30% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
   }
   50% {
-    transform: scale(1.2);
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.4);
+  }
+  70% {
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
   }
   100% {
-    transform: scale(1);
+    transform: translate(-50%, -50%) rotate(45deg) scale(1);
   }
 }
 
@@ -524,9 +493,84 @@ body {
 /* Improve touch area for mobile */
 @media (max-width: 768px) {
   .heart {
-    width: 44px;
-    height: 44px;
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.1);
+    width: 32px;
+    height: 32px;
+    top: 85px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 32px;
+    height: 32px;
+  }
+
+  .heart::before {
+    top: -16px;
+  }
+
+  .heart::after {
+    left: -16px;
+  }
+
+  .close-btn {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .letter {
+    width: 85vw;
+    max-width: 400px;
+    height: 70vh;
+    max-height: 500px;
+    padding: 20px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .text {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .text h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .passcode-screen button {
+    padding: 15px 35px;
+    font-size: 18px;
+    min-width: 120px;
+  }
+
+  .passcode-screen input {
+    font-size: 16px;
+    padding: 12px;
+    width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heart {
+    width: 28px;
+    height: 28px;
+    top: 80px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 28px;
+    height: 28px;
+  }
+
+  .heart::before {
+    top: -14px;
+  }
+
+  .heart::after {
+    left: -14px;
   }
 
   .close-btn {
