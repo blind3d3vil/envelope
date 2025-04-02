@@ -223,12 +223,13 @@
 
 .heart {
   position: absolute;
-  top: 90px;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
-  width: 40px;
-  height: 40px;
+  transform: translate(-50%, -50%);
+  width: 30px;
+  height: 30px;
   background: #ff3838;
+  transform-origin: center;
   z-index: 4;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -236,6 +237,7 @@
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
+  transform: rotate(-45deg);
 }
 
 .envelope.open .heart {
@@ -249,38 +251,40 @@
 .heart::after {
   content: "";
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background: #ff3838;
   border-radius: 50%;
 }
 
 .heart::before {
-  left: -20px;
+  top: -15px;
+  left: 0;
 }
 
 .heart::after {
-  top: -20px;
+  top: 0;
+  left: 15px;
 }
 
 @keyframes heartbeat {
   0% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+    transform: rotate(-45deg) scale(1);
   }
   25% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+    transform: rotate(-45deg) scale(1);
   }
   30% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    transform: rotate(-45deg) scale(1.2);
   }
   50% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.4);
+    transform: rotate(-45deg) scale(1.4);
   }
   70% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    transform: rotate(-45deg) scale(1.2);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+    transform: rotate(-45deg) scale(1);
   }
 }
 
@@ -290,45 +294,47 @@
 
 @media (max-width: 768px) {
   .heart {
-    width: 35px;
-    height: 35px;
-    top: 80px;
+    width: 25px;
+    height: 25px;
   }
 
   .heart::before,
   .heart::after {
-    width: 35px;
-    height: 35px;
+    width: 25px;
+    height: 25px;
   }
 
   .heart::before {
-    left: -17.5px;
+    top: -12.5px;
+    left: 0;
   }
 
   .heart::after {
-    top: -17.5px;
+    top: 0;
+    left: 12.5px;
   }
 }
 
 @media (max-width: 480px) {
   .heart {
-    width: 30px;
-    height: 30px;
-    top: 70px;
+    width: 20px;
+    height: 20px;
   }
 
   .heart::before,
   .heart::after {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
   }
 
   .heart::before {
-    left: -15px;
+    top: -10px;
+    left: 0;
   }
 
   .heart::after {
-    top: -15px;
+    top: 0;
+    left: 10px;
   }
 }
 
