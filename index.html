@@ -2,85 +2,49 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <meta name="theme-color" content="#444444" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Secret Love Letter</title>
     <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-    />
   </head>
   <body>
-    <div class="wrapper">
-      <!-- Passcode screen -->
-      <div class="passcode-screen">
-        <h2>How Many Kisses I've Given You? 💋</h2>
-        <input type="number" id="passcode" placeholder="Enter number..." />
-        <button id="submit-btn">moah</button>
-        <div class="error-container">
-          <p id="error-msg"></p>
+    <div class="bg-wrapper">
+      <div class="wrapper">
+        <div class="passcode-screen">
+          <h2>Enter Passcode</h2>
+          <input
+            type="number"
+            id="passcode"
+            placeholder=""
+            min="0"
+            autocomplete="off"
+          />
+          <div class="error-container">
+            <span id="error-msg"></span>
+          </div>
+          <button id="submit-btn">moah</button>
         </div>
-      </div>
 
-      <!-- Envelope content -->
-      <div class="content">
-        <div class="bg-wrapper">
+        <div class="content">
           <div class="envelope-wrapper">
             <div class="envelope">
               <div class="envelope-flap"></div>
+              <div class="heart"></div>
               <div class="letter">
-                <div class="close-btn">&times;</div>
-                <div class="text">
-                  <h1>My Love,</h1>
-                  <p>
-                    There are feelings in this world that words can't contain,
-                    emotions too vast for any sentence to hold. But if I could
-                    try—if I could give even a glimpse of what you mean to me—it
-                    would be this: You are my heart, my warmth, my forever.
-                  </p>
-                  <p>
-                    Loving you isn't something I choose—it's something that just
-                    is. As natural as breathing, as certain as the sun rising
-                    each morning. It doesn't begin and end with the days; it
-                    doesn't depend on time, distance, or circumstances. It just
-                    exists—constant, unshaken, infinite.
-                  </p>
-                  <p>
-                    You are the feeling of home, no matter where I stand. You
-                    are the quiet in my chaos, the light in my darkest moments.
-                    You are the person I'd find in every lifetime, in every
-                    world, no matter how many times I had to search.
-                  </p>
-                  <p>
-                    And if ever a day comes when you forget just how deeply youz
-                    are loved, remember this—there is not a single version of my
-                    life where you are not everything.
-                  </p>
-                  <p class="signature">I Love You In Every Universe,</p>
-                  <p class="signature">Alireza</p>
+                <button class="close-btn">✕</button>
+                <div class="text" id="letter-content">
+                  <!-- Letter content will be loaded from config.js -->
                 </div>
               </div>
             </div>
-            <div class="heart"></div>
           </div>
         </div>
       </div>
     </div>
     <div class="copyright">
       Made by
-      <a
-        href="https://www.instagram.com/blind3d3vil?igsh=MXRyMnVjZ21udGN3eA=="
-        target="_blank"
-        >Dropkiler</a
-      >
+      <a href="https://github.com/blind3d3vil" target="_blank">Dropkiler</a>
     </div>
-
+    <script src="config.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
