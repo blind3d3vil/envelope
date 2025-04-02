@@ -16,7 +16,7 @@ A beautiful interactive love letter envelope with animations and a passcode prot
 1. Clone the repository:
 
 ```bash
-git clone [your-repo-url]
+git clone https://github.com/blind3d3vil/envelope.git
 ```
 
 2. Open `index.html` in your browser
