@@ -24,48 +24,39 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Create config.js
+      - name: Copy config.js
         run: |
-          # Create js directory if it doesn't exist
-          mkdir -p js
-
-          # Create config.js with the content from your secret
-          cat > js/config.js << 'EOL'
-          const config = {
-            passcode: {
-              value: ${{ secrets.PASSCODE }},
-              placeholder: "How Many Kisses I've Given You? 💋",
-              errorMessage: "Na Ah, Wrong number Azizam🚫"
-            },
-            letter: {
-              title: "My Love,",
-              paragraphs: [
-                "There are feelings in this world that words can't contain, emotions too vast for any sentence to hold. But if I could try—if I could give even a glimpse of what you mean to me—it would be this: You are my heart, my warmth, my forever.",
-                "Loving you isn't something I choose—it's something that just is. As natural as breathing, as certain as the sun rising each morning. It doesn't begin and end with the days; it doesn't depend on time, distance, or circumstances. It just exists—constant, unshaken, infinite.",
-                "You are the feeling of home, no matter where I stand. You are the quiet in my chaos, the light in my darkest moments. You are the person I'd find in every lifetime, in every world, no matter how many times I had to search.",
-                "And if ever a day comes when you forget just how deeply you are loved, remember this—there is not a single version of my life where you are not everything."
-              ],
-              signature: {
-                text: "I Love You In Every Universe,",
-                name: "Alireza"
+          # Copy your config.js if it exists, otherwise create a minimal one
+          if [ -f "js/config.js" ]; then
+            echo "Using existing config.js"
+            cp js/config.js js/config.js.tmp
+          else
+            echo "Creating minimal config.js"
+            # Create js directory if it doesn't exist
+            mkdir -p js
+            # Create minimal config.js with just the passcode
+            cat > js/config.js.tmp << 'EOL'
+            const config = {
+              passcode: {
+                value: ${{ secrets.PASSCODE }},
+                placeholder: "Enter number...",
+                errorMessage: "Try again!"
               }
-            }
-          };
+            };
+            window.config = config;
+            window.getConfig = function() {
+              return config;
+            };
+            EOL
+          fi
 
-          // Make config globally available
-          window.config = config;
+          # Replace the passcode in the config file
+          sed -i "s/value:.*,/value: ${{ secrets.PASSCODE }},/" js/config.js.tmp
+          mv js/config.js.tmp js/config.js
 
-          // Define getConfig function
-          window.getConfig = function() {
-            return config;
-          };
-          EOL
-
-          # Verify config.js was created
+          # Verify config.js exists
           echo "Verifying config.js exists:"
           ls -l js/config.js
-          echo "First few lines of config.js:"
-          head -n 5 js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
