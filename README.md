@@ -1,15 +1,13 @@
-# Secret Love Letter 💌
+# Digital Love Letter
 
-A beautiful interactive love letter envelope with animations and a passcode protection. When opened, it reveals a heartfelt message with smooth animations and transitions.
+A private, interactive love letter with a password-protected envelope design.
 
 ## Features
 
-- 💝 Interactive envelope with opening animation
-- 💕 Beating heart animation
-- 🔒 Passcode protection
-- 📜 Smooth letter reveal animation
-- 📱 Mobile responsive design
-- ❌ Close button with smooth transitions
+- Interactive envelope animation
+- Password protection
+- Mobile responsive
+- Clean animations
 
 ## Setup
 
@@ -19,21 +17,9 @@ A beautiful interactive love letter envelope with animations and a passcode prot
 git clone https://github.com/blind3d3vil/envelope.git
 ```
 
-2. Open `index.html` in your browser
+2. Create a config.js file with your private content
+3. Open index.html in your browser
 
-## Technologies Used
+## Contact
 
-- HTML5
-- CSS3 (with animations)
-- JavaScript (Vanilla)
-
-## Usage
-
-1. Click on the beating heart to open the envelope
-2. Enter the correct passcode when prompted
-3. Read the love letter
-4. Click the close button to close the letter
-
-## Credits
-
-Created with ❤️ by [Dropkiler](https://www.instagram.com/blind3d3vil)
+[@blind3d3vil](https://www.instagram.com/blind3d3vil)
