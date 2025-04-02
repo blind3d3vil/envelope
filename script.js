@@ -1,123 +1,96 @@
-// Make checkPasscode globally available
-function checkPasscode() {
-  if (typeof CONFIG === "undefined") {
-    console.error("Config file missing");
-    return;
-  }
+const correctPasscode = 3000;
 
+function checkPasscode() {
   let input = document.getElementById("passcode");
   let inputVal = input.value;
   let errorMsg = document.getElementById("error-msg");
   let errorContainer = document.querySelector(".error-container");
   let wrapper = document.querySelector(".wrapper");
 
-  // Compare as strings to match config.js format
-  if (inputVal === CONFIG.passcode) {
+  if (parseInt(inputVal) === correctPasscode) {
     wrapper.classList.add("show-envelope");
+    // Reset error state
     errorMsg.classList.remove("show");
     errorContainer.classList.remove("show");
   } else {
-    errorMsg.innerText = "Wrong number";
+    errorMsg.innerText = "Na Ah, Wrong number Azizam🚫";
     errorMsg.classList.add("show");
     errorContainer.classList.add("show");
+    // Clear input field
     input.value = "";
+    // Focus back on input for immediate retry
     input.focus();
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+// Add back the enter key functionality
+document.getElementById("passcode").addEventListener("keyup", function (event) {
+  if (event.key === "Enter") {
+    checkPasscode();
+  }
+});
+
+// Prevent negative numbers
+document.getElementById("passcode").addEventListener("input", function () {
+  if (this.value < 0) {
+    this.value = 0;
+  }
+});
+
+// Allow only numbers
+document
+  .getElementById("passcode")
+  .addEventListener("keypress", function (event) {
+    if (
+      !/[\d]/.test(event.key) &&
+      event.key !== "Backspace" &&
+      event.key !== "Delete" &&
+      !event.key.includes("Arrow")
+    ) {
+      event.preventDefault();
+    }
+  });
+
+// For mobile devices - prevent paste of non-numeric values
+document.getElementById("passcode").addEventListener("paste", function (event) {
+  let pasteData = (event.clipboardData || window.clipboardData).getData("text");
+  if (!/^\d*$/.test(pasteData)) {
+    event.preventDefault();
+  }
+});
+
+// Clear error when input changes
+document.getElementById("passcode").addEventListener("input", function () {
+  let errorMsg = document.getElementById("error-msg");
+  let errorContainer = document.querySelector(".error-container");
+  if (this.value) {
+    // Only clear error if user is typing new number
+    errorMsg.classList.remove("show");
+    errorContainer.classList.remove("show");
+  }
+});
+
+// Add envelope and letter functionality
+document.addEventListener("DOMContentLoaded", () => {
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
   const letter = document.querySelector(".letter");
   const closeBtn = document.querySelector(".close-btn");
-  const textContainer = document.querySelector(".text");
   let isAnimating = false;
 
-  // Passcode input handlers
-  document
-    .getElementById("passcode")
-    .addEventListener("keyup", function (event) {
-      if (event.key === "Enter") {
-        checkPasscode();
-      }
-    });
-
-  document.getElementById("passcode").addEventListener("input", function () {
-    if (this.value < 0) {
-      this.value = 0;
-    }
-    // Clear error when typing
-    let errorMsg = document.getElementById("error-msg");
-    let errorContainer = document.querySelector(".error-container");
-    if (this.value) {
-      errorMsg.classList.remove("show");
-      errorContainer.classList.remove("show");
-    }
-  });
-
-  document
-    .getElementById("passcode")
-    .addEventListener("keypress", function (event) {
-      if (
-        !/[\d]/.test(event.key) &&
-        event.key !== "Backspace" &&
-        event.key !== "Delete" &&
-        !event.key.includes("Arrow")
-      ) {
-        event.preventDefault();
-      }
-    });
-
-  document
-    .getElementById("passcode")
-    .addEventListener("paste", function (event) {
-      let pasteData = (event.clipboardData || window.clipboardData).getData(
-        "text"
-      );
-      if (!/^\d*$/.test(pasteData)) {
-        event.preventDefault();
-      }
-    });
-
-  // Load letter content
-  function loadLetterContent() {
-    if (typeof CONFIG === "undefined" || !CONFIG.letterContent) {
-      textContainer.innerHTML =
-        "<h1>Please enter the correct passcode to view this letter.</h1>";
-      return;
-    }
-
-    const content = CONFIG.letterContent;
-
-    const title = document.createElement("h1");
-    title.textContent = content.title;
-    textContainer.appendChild(title);
-
-    content.paragraphs.forEach((text) => {
-      const p = document.createElement("p");
-      p.textContent = text;
-      textContainer.appendChild(p);
-    });
-
-    const signature = document.createElement("p");
-    signature.className = "signature";
-    signature.textContent = content.signature;
-    textContainer.appendChild(signature);
-  }
-
-  loadLetterContent();
-
-  // Handle envelope interactions
+  // Heart click opens the envelope
   heart.addEventListener("click", () => {
     if (!isAnimating && !envelope.classList.contains("open")) {
       isAnimating = true;
       heart.style.opacity = "0";
       heart.style.visibility = "hidden";
 
+      // Small delay before opening envelope
       setTimeout(() => {
         envelope.classList.add("open");
       }, 50);
 
+      // Wait for flap animation to complete before showing letter
       setTimeout(() => {
         letter.style.visibility = "visible";
         letter.style.animation =
@@ -134,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
+  // Close button functionality
   if (closeBtn) {
     closeBtn.onclick = function (e) {
       e.preventDefault();
@@ -151,6 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
             letter.style.visibility = "hidden";
             letter.style.animation = "";
 
+            // Show heart after envelope is closed
             setTimeout(() => {
               heart.style.visibility = "visible";
               heart.style.opacity = "1";
@@ -163,6 +138,7 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 
+  // Prevent letter clicks from affecting envelope
   letter.addEventListener("click", (e) => {
     if (e.target !== closeBtn) {
       e.stopPropagation();
