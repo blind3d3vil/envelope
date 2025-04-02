@@ -51,7 +51,7 @@ Don't worry, your message stays secret:
 - Content is hidden from nosy people
 - Can't be found in page source
 
-## 🌐 Live Demo
+## Live Demo
 
 See the love letter in action: [Live Demo](https://blind3d3vil.github.io/envelope/)
 
