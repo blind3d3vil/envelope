@@ -27,13 +27,13 @@ jobs:
       - name: Create config.js
         run: |
           mkdir -p js
-          echo 'const CONFIG = ${{ toJSON(secrets.CONFIG_CONTENT) }};
-
+          echo "const CONFIG = ${{ secrets.CONFIG_CONTENT }};" > js/config.js
+          echo "
           (function() {
             window.getConfig = function() {
               return JSON.parse(JSON.stringify(CONFIG));
             };
-          })();' > js/config.js
+          })();" >> js/config.js
           cat js/config.js
 
       - name: Upload artifact
