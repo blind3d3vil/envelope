@@ -1,7 +1,7 @@
 const CONFIG = {
   passcode: {
     value: 3000,
-    placeholder: "How many kisses do you want? 💋",
+    placeholder: "Enter number...",
     errorMessage: "Na Ah, Wrong number Azizam🚫",
   },
   letter: {
