@@ -26,35 +26,39 @@ jobs:
 
       - name: Create config.js
         run: |
-          mkdir -p js
-          echo 'window.getConfig = function() {
-            return {
-              hasPasscode: true,
-              passcodeType: "number",
-              passcode: {
-                value: Number(${{ secrets.PASSCODE }}),
-                placeholder: "Enter number...",
-                errorMessage: "Try again!"
-              },
-              letter: {
-                title: "My Love Letter",
-                paragraphs: [
-                  "Dear love...",
-                  "You mean everything to me...",
-                  "Forever yours..."
-                ],
-                signature: {
-                  text: "With all my love,",
-                  name: "Your Secret Admirer"
-                }
-              },
-              ui: {
-                title: "Enter Secret Code",
-                submitButton: "Open Letter",
-                closeButton: "×"
+          cat > js/config.js << 'EOL'
+          const CONFIG = {
+            hasPasscode: true,
+            passcodeType: "number",
+            passcode: {
+              value: PASSCODE_VALUE,
+              placeholder: "Enter number...",
+              errorMessage: "Try again!"
+            },
+            letter: {
+              title: "My Love Letter",
+              paragraphs: [
+                "Dear love...",
+                "You mean everything to me...",
+                "Forever yours..."
+              ],
+              signature: {
+                text: "With all my love,",
+                name: "Your Secret Admirer"
               }
-            };
-          };' > js/config.js
+            },
+            ui: {
+              title: "Enter Secret Code",
+              submitButton: "Open Letter",
+              closeButton: "×"
+            }
+          };
+
+          window.getConfig = function() {
+            return CONFIG;
+          };
+          EOL
+          sed -i "s/PASSCODE_VALUE/${{ secrets.PASSCODE }}/g" js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
