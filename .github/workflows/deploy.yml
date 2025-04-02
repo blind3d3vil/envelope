@@ -28,14 +28,33 @@ jobs:
         run: |
           mkdir -p js
           echo "window.CONFIG = {
-            hasPasscode: true,
-            passcodeType: 'number',
-            passcode: '${{ secrets.PASSCODE }}'
+            passcode: {
+              value: ${{ secrets.PASSCODE }},
+              placeholder: 'Enter number...',
+              errorMessage: 'Try again!'
+            },
+            letter: {
+              title: 'My Love Letter',
+              paragraphs: [
+                'Dear love...',
+                'You mean everything to me...',
+                'Forever yours...'
+              ],
+              signature: {
+                text: 'With all my love,',
+                name: 'Your Secret Admirer'
+              }
+            },
+            ui: {
+              title: 'Enter Secret Code',
+              submitButton: 'Open Letter',
+              closeButton: '×'
+            }
           };
 
           (function() {
             window.getConfig = function() {
-              return JSON.parse(JSON.stringify(window.CONFIG));
+              return window.CONFIG;
             };
           })();" > js/config.js
           cat js/config.js
