@@ -1,4 +1,4 @@
-# Secret Love Letter 💌
+# Secret Love Letter
 
 Want to share something special with someone you love? This is a digital love letter wrapped in a beautiful interactive envelope. They'll need a secret code to open it (make it meaningful! 😉).
 
