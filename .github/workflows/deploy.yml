@@ -28,7 +28,7 @@ jobs:
         run: |
           mkdir -p js
           cat > js/config.js << 'EOL'
-          // Configuration for the love letter
+          // Configuration file for the love letter app
           window.CONFIG = {
             hasPasscode: true,
             passcodeType: "number",
@@ -56,7 +56,7 @@ jobs:
             }
           };
 
-          // Function to safely access the configuration
+          // Function to safely access the config
           window.getConfig = function() {
             return window.CONFIG;
           }
