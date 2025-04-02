@@ -221,119 +221,87 @@
   font-weight: 500;
 }
 
+/* Heart styles */
 .heart {
   position: absolute;
-  top: -140px;
-  left: 50%;
-  transform: translate(-50%, 50%) rotate(-45deg);
-  width: 25px;
-  height: 25px;
-  background: #ff3838;
-  transform-origin: center;
   z-index: 4;
+  left: 50%;
+  top: 90px;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background-color: var(--heart-color);
+  transform-origin: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-.envelope.open .heart {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transition: opacity 0.1s ease, visibility 0s linear;
+  animation: pulse 0.75s infinite;
 }
 
 .heart::before,
 .heart::after {
   content: "";
   position: absolute;
-  width: 25px;
-  height: 25px;
-  background: #ff3838;
+  width: 40px;
+  height: 40px;
+  background-color: var(--heart-color);
   border-radius: 50%;
+  transition: all 0.3s ease;
 }
 
 .heart::before {
-  top: -12.5px;
-  left: 0;
+  left: -20px;
 }
 
 .heart::after {
-  top: 0;
-  left: 12.5px;
-}
-
-@keyframes heartbeat {
-  0% {
-    transform: translate(-50%, 50%) rotate(-45deg) scale(1);
-  }
-  25% {
-    transform: translate(-50%, 50%) rotate(-45deg) scale(1);
-  }
-  30% {
-    transform: translate(-50%, 50%) rotate(-45deg) scale(1.2);
-  }
-  50% {
-    transform: translate(-50%, 50%) rotate(-45deg) scale(1.4);
-  }
-  70% {
-    transform: translate(-50%, 50%) rotate(-45deg) scale(1.2);
-  }
-  100% {
-    transform: translate(-50%, 50%) rotate(-45deg) scale(1);
-  }
+  top: -20px;
 }
 
 .heart {
-  animation: heartbeat 1.4s linear infinite;
+  transform: translateX(-50%) rotate(45deg);
 }
 
+/* Mobile responsive styles */
 @media (max-width: 768px) {
   .heart {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
+    top: 80px;
   }
 
   .heart::before,
   .heart::after {
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
   }
 
   .heart::before {
-    top: -11px;
-    left: 0;
+    left: -15px;
   }
 
   .heart::after {
-    top: 0;
-    left: 11px;
+    top: -15px;
   }
 }
 
 @media (max-width: 480px) {
   .heart {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
+    top: 75px;
   }
 
   .heart::before,
   .heart::after {
-    width: 20px;
-    height: 20px;
+    width: 25px;
+    height: 25px;
   }
 
   .heart::before {
-    top: -10px;
-    left: 0;
+    left: -12.5px;
   }
 
   .heart::after {
-    top: 0;
-    left: 10px;
+    top: -12.5px;
   }
 }
 
