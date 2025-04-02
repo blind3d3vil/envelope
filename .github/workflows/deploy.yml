@@ -30,11 +30,15 @@ jobs:
           echo "Initial directory structure:"
           ls -la
 
-          # Create js directory if it doesn't exist
-          mkdir -p js
+          # First, copy all existing files to a temp directory
+          mkdir -p _site
+          cp -r * _site/
+
+          # Create js directory in _site if it doesn't exist
+          mkdir -p _site/js
 
           # Create config.js with proper JavaScript structure
-          cat > js/config.js << 'EOL'
+          cat > _site/js/config.js << 'EOL'
           const config = {
             passcode: {
               value: 3000,
@@ -81,17 +85,19 @@ jobs:
           };
           EOL
 
-          # Debug: Show final structure
-          echo "Final directory structure:"
-          ls -la
+          # Debug: Show deployment structure
+          echo "Deployment directory structure:"
+          ls -la _site
           echo "Contents of js directory:"
-          ls -la js/
+          ls -la _site/js/
 
           # Verify all required files
           echo "Verifying files:"
-          for file in index.html js/script.js js/config.js; do
+          for file in _site/index.html _site/js/script.js _site/js/config.js; do
             if [ -f "$file" ]; then
               echo "$file exists and size is: $(wc -c < "$file") bytes"
+              echo "First few lines of $file:"
+              head -n 3 "$file"
             else
               echo "WARNING: $file is missing!"
             fi
@@ -100,7 +106,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: "_site"
 
       - name: Deploy to GitHub Pages
         id: deployment
