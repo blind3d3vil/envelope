@@ -27,12 +27,12 @@ jobs:
       - name: Create config.js
         env:
           LETTER_CONTENT: ${{ secrets.LETTER_CONTENT }}
-          PASSCODE: ${{ secrets.PASSCODE }}
+          PASSCODE_HASH: ${{ secrets.PASSCODE_HASH }}
         run: |
           cat > js/config.js << EOL
           const CONFIG = {
             passcode: {
-              value: Number("${PASSCODE}"),
+              hash: "${PASSCODE_HASH}",
               placeholder: "How Many Kisses I've Given You? 💋",
               errorMessage: "Nope, try again! 💕",
             },
