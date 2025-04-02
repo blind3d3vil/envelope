@@ -51,11 +51,11 @@ Don't worry, your message stays secret:
 - Content is hidden from nosy people
 - Can't be found in page source
 
-## Live Demo
+## 🌐 Live Demo
 
-See the love letter in action: [Live Demo](https://blind3d3vil.github.io/)
+See the love letter in action: [Live Demo](https://blind3d3vil.github.io/envelope/) 💕
 
-Want to create your own? Fork this repository and customize it for your special someone!
+Want to create your own? Fork this repository and customize it for your special someone! 💝
 
 ## Made With Love
 
