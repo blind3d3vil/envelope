@@ -26,28 +26,20 @@ jobs:
 
       - name: Prepare deployment files
         run: |
-          # Show initial structure
+          # Debug: Show initial structure
           echo "Initial directory structure:"
           ls -la
-
-          # Ensure js directory exists
-          mkdir -p js
-
-          # Copy all necessary files to their locations
-          cp -r assets .
-          cp index.html .
-          cp js/script.js js/
 
           # Create config.js from secret
           echo "${{ secrets.CONFIG_JS }}" > js/config.js
 
-          # Debug: Show directory structure
+          # Debug: Show final structure
           echo "Final directory structure:"
           ls -la
           echo "Contents of js directory:"
           ls -la js/
 
-          # Verify files exist and have content
+          # Verify all required files
           echo "Verifying files:"
           for file in index.html js/script.js js/config.js; do
             if [ -f "$file" ]; then
@@ -56,6 +48,10 @@ jobs:
               echo "WARNING: $file is missing!"
             fi
           done
+
+          # Display config.js content length (without showing sensitive data)
+          echo "Config.js content length:"
+          wc -c < js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
