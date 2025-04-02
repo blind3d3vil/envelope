@@ -76,13 +76,15 @@ jobs:
           };
           EOL
 
-          # Verify files
+          # Verify files and structure
           echo "Checking directory structure:"
           ls -la
           echo "Checking js directory:"
           ls -la js/
           echo "Checking config.js contents:"
           cat js/config.js
+          echo "Checking script.js exists:"
+          ls -l js/script.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
