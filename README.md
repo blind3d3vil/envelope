@@ -17,6 +17,24 @@ Want to share something special with someone you love? This is a digital love le
 3. Put your message and secret code in `config.js`
 4. Upload to GitHub Pages (or anywhere you like)
 
+## Project Structure
+
+```
+📦 secret-love-letter
+ ┣ 📂 assets
+ ┃ ┗ 📂 css
+ ┃   ┗ 📜 styles.css
+ ┣ 📂 js
+ ┃ ┣ 📜 config.example.js
+ ┃ ┗ 📜 script.js
+ ┣ 📂 .github
+ ┃ ┗ 📂 workflows
+ ┃   ┗ 📜 deploy.yml
+ ┣ 📜 .gitignore
+ ┣ 📜 index.html
+ ┗ 📜 README.md
+```
+
 ## Make it Yours
 
 Open `config.js` and change:
