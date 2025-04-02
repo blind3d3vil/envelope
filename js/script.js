@@ -3,13 +3,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getConfigSafely = () => {
     try {
-      // First try to get config from window object
       if (window.config) {
         console.log("Found config in window object");
         return window.config;
       }
 
-      // Then try to get config from getConfig function
       if (typeof window.getConfig === "function") {
         console.log("Using getConfig function");
         const config = window.getConfig();
@@ -17,8 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
           return config;
         }
       }
-
-      // If neither exists, use fallback config
       console.warn("No config found, using fallback configuration");
       return {
         passcode: {
