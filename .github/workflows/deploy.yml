@@ -24,39 +24,23 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Copy config.js
+      - name: Create config.js
         run: |
-          # Copy your config.js if it exists, otherwise create a minimal one
-          if [ -f "js/config.js" ]; then
-            echo "Using existing config.js"
-            cp js/config.js js/config.js.tmp
-          else
-            echo "Creating minimal config.js"
-            # Create js directory if it doesn't exist
-            mkdir -p js
-            # Create minimal config.js with just the passcode
-            cat > js/config.js.tmp << 'EOL'
-            const config = {
-              passcode: {
-                value: ${{ secrets.PASSCODE }},
-                placeholder: "Enter number...",
-                errorMessage: "Try again!"
-              }
-            };
-            window.config = config;
-            window.getConfig = function() {
-              return config;
-            };
-            EOL
-          fi
+          # Create js directory
+          mkdir -p js
 
-          # Replace the passcode in the config file
-          sed -i "s/value:.*,/value: ${{ secrets.PASSCODE }},/" js/config.js.tmp
-          mv js/config.js.tmp js/config.js
+          # Create config.js from secret
+          echo "${{ secrets.CONFIG_JS }}" > js/config.js
 
-          # Verify config.js exists
+          # Verify config.js exists and has content
           echo "Verifying config.js exists:"
           ls -l js/config.js
+          echo "Checking if config.js has content:"
+          if [ -s js/config.js ]; then
+            echo "config.js is not empty"
+          else
+            echo "Warning: config.js is empty"
+          fi
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
