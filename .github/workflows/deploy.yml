@@ -30,12 +30,14 @@ jobs:
           echo "Initial directory structure:"
           ls -la
 
-          # First, copy all existing files to a temp directory
-          mkdir -p _site
-          cp -r * _site/
-
-          # Create js directory in _site if it doesn't exist
+          # Create deployment directory structure
           mkdir -p _site/js
+          mkdir -p _site/assets/css
+
+          # Copy static files
+          cp index.html _site/
+          cp -r assets/* _site/assets/
+          cp js/script.js _site/js/
 
           # Create config.js with proper JavaScript structure
           cat > _site/js/config.js << 'EOL'
@@ -86,21 +88,22 @@ jobs:
           EOL
 
           # Debug: Show deployment structure
-          echo "Deployment directory structure:"
-          ls -la _site
-          echo "Contents of js directory:"
-          ls -la _site/js/
+          echo "Final deployment structure:"
+          find _site -type f
 
-          # Verify all required files
-          echo "Verifying files:"
+          # Show file contents and sizes
+          echo "File contents and sizes:"
           for file in _site/index.html _site/js/script.js _site/js/config.js; do
+            echo "=== $file ==="
             if [ -f "$file" ]; then
-              echo "$file exists and size is: $(wc -c < "$file") bytes"
-              echo "First few lines of $file:"
-              head -n 3 "$file"
+              echo "Size: $(wc -c < "$file") bytes"
+              echo "First 5 lines:"
+              head -n 5 "$file"
+              echo "File exists ✅"
             else
-              echo "WARNING: $file is missing!"
+              echo "WARNING: File missing ❌"
             fi
+            echo
           done
 
       - name: Upload artifact
