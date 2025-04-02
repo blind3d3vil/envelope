@@ -8,17 +8,41 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitBtn = document.getElementById("submit-btn");
   let isAnimating = false;
 
+  // Simple content protection
+  function protect(str) {
+    return btoa(encodeURIComponent(str));
+  }
+
+  function unprotect(str) {
+    return decodeURIComponent(atob(str));
+  }
+
   // Set up initial values from config
   passcodeInput.placeholder = config.passcode.placeholder;
 
-  // Load letter content
-  const letterContent = document.getElementById("letter-content");
-  letterContent.innerHTML = `
-    <h1>${config.letter.title}</h1>
-    ${config.letter.paragraphs.map((p) => `<p>${p}</p>`).join("")}
-    <p class="signature">${config.letter.signature.text}</p>
-    <p class="signature">${config.letter.signature.name}</p>
-  `;
+  // Store protected content
+  const protectedContent = {
+    title: protect(config.letter.title),
+    paragraphs: config.letter.paragraphs.map((p) => protect(p)),
+    signature: {
+      text: protect(config.letter.signature.text),
+      name: protect(config.letter.signature.name),
+    },
+  };
+
+  function loadLetterContent() {
+    const letterContent = document.getElementById("letter-content");
+    letterContent.innerHTML = `
+      <div class="protected-content" style="visibility: hidden">
+        <h1>${unprotect(protectedContent.title)}</h1>
+        ${protectedContent.paragraphs
+          .map((p) => `<p>${unprotect(p)}</p>`)
+          .join("")}
+        <p class="signature">${unprotect(protectedContent.signature.text)}</p>
+        <p class="signature">${unprotect(protectedContent.signature.name)}</p>
+      </div>
+    `;
+  }
 
   function checkPasscode() {
     let inputVal = passcodeInput.value;
@@ -30,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       wrapper.classList.add("show-envelope");
       errorMsg.classList.remove("show");
       errorContainer.classList.remove("show");
+      loadLetterContent();
     } else {
       errorMsg.innerText = config.passcode.errorMessage;
       errorMsg.classList.add("show");
@@ -101,6 +126,13 @@ document.addEventListener("DOMContentLoaded", function () {
           letter.style.visibility = "visible";
           letter.style.animation =
             "letterReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
+
+          // Show content after animation
+          const protectedContent = letter.querySelector(".protected-content");
+          if (protectedContent) {
+            protectedContent.style.visibility = "visible";
+          }
+
           letter.addEventListener(
             "animationend",
             function () {
@@ -130,12 +162,22 @@ document.addEventListener("DOMContentLoaded", function () {
         letter.style.animation =
           "letterClose 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
 
+        // Hide content immediately
+        const protectedContent = letter.querySelector(".protected-content");
+        if (protectedContent) {
+          protectedContent.style.visibility = "hidden";
+        }
+
         letter.addEventListener(
           "animationend",
           function () {
             envelope.classList.remove("open");
             letter.style.visibility = "hidden";
             letter.style.animation = "";
+
+            // Clear content when closed
+            const letterContent = document.getElementById("letter-content");
+            letterContent.innerHTML = "";
 
             setTimeout(function () {
               heart.style.visibility = "visible";
