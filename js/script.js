@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Ensure config exists and has default values if something goes wrong
   const getConfigSafely = () => {
     try {
       return (
