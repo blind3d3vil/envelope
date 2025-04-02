@@ -26,13 +26,13 @@ jobs:
 
       - name: Create config.js
         run: |
-          echo 'const CONFIG = ${{ toJSON(secrets.CONFIG_CONTENT) }};
+          echo "const CONFIG = JSON.parse('${{ secrets.CONFIG_CONTENT }}');
 
           (function () {
             window.getConfig = function () {
               return JSON.parse(JSON.stringify(CONFIG));
             };
-          })();' > js/config.js
+          })();" > js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

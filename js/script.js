@@ -5,27 +5,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Ensure config exists and has default values if something goes wrong
   const getConfigSafely = () => {
     try {
+      if (typeof window.getConfig !== "function") {
+        console.error("getConfig is not a function");
+        throw new Error("Config function not found");
+      }
+
       const config = window.getConfig();
-      console.log("Config loaded:", config ? "success" : "failed");
-      return (
-        config || {
-          passcode: {
-            value: 0,
-            placeholder: "Enter number...",
-            errorMessage: "Try again!",
-          },
-          letter: {
-            title: "",
-            paragraphs: [""],
-            signature: { text: "", name: "" },
-          },
-          ui: {
-            title: "Enter Secret Code",
-            submitButton: "Open Letter",
-            closeButton: "×",
-          },
-        }
-      );
+      console.log("Raw config:", config);
+
+      if (!config) {
+        throw new Error("Config is null or undefined");
+      }
+
+      if (!config.passcode || typeof config.passcode.value !== "number") {
+        console.error("Invalid passcode configuration:", config.passcode);
+        throw new Error("Invalid passcode configuration");
+      }
+
+      console.log("Config loaded successfully");
+      return config;
     } catch (e) {
       console.error("Config error:", e);
       return {
@@ -49,6 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const config = getConfigSafely();
+  console.log("Using config:", {
+    hasPasscode: !!config.passcode,
+    passcodeType: typeof config.passcode.value,
+    hasLetter: !!config.letter,
+    ui: !!config.ui,
+  });
+
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
   const letter = document.querySelector(".letter");
@@ -132,20 +137,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
     console.log("Input value:", inputVal);
     console.log("Expected value:", config.passcode.value);
+    console.log(
+      "Types - Input:",
+      typeof parseInt(inputVal),
+      "Expected:",
+      typeof config.passcode.value
+    );
 
     if (!inputVal || !config.passcode.value) {
       console.error("Missing input value or passcode configuration");
       return;
     }
 
-    if (parseInt(inputVal) === config.passcode.value) {
+    const parsedInput = parseInt(inputVal);
+    if (parsedInput === config.passcode.value) {
       console.log("Passcode correct");
       if (wrapper) wrapper.classList.add("show-envelope");
       if (errorMsg) errorMsg.classList.remove("show");
       if (errorContainer) errorContainer.classList.remove("show");
       loadLetterContent();
     } else {
-      console.log("Passcode incorrect");
+      console.log("Passcode incorrect", {
+        input: parsedInput,
+        expected: config.passcode.value,
+        match: parsedInput === config.passcode.value,
+      });
       if (errorMsg) {
         errorMsg.innerText = config.passcode.errorMessage;
         errorMsg.classList.add("show");
@@ -158,25 +174,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Directly bind click event
   if (submitBtn) {
     console.log("Setting up submit button handlers");
-    submitBtn.onclick = (e) => {
-      console.log("Submit button clicked");
+
+    const handleSubmit = (e) => {
+      console.log("Submit handler called", e.type);
       e.preventDefault();
       e.stopPropagation();
       checkPasscode();
     };
 
-    submitBtn.addEventListener(
-      "touchend",
-      (e) => {
-        console.log("Submit button touched");
-        e.preventDefault();
-        checkPasscode();
-      },
-      { passive: false }
-    );
+    // Add multiple event listeners for better compatibility
+    submitBtn.addEventListener("click", handleSubmit);
+    submitBtn.addEventListener("touchend", handleSubmit, { passive: false });
+    // Fallback onclick handler
+    submitBtn.onclick = handleSubmit;
   }
 
   if (passcodeInput) {
