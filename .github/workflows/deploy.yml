@@ -26,18 +26,10 @@ jobs:
 
       - name: Create config.js
         env:
-          LETTER_CONTENT: ${{ secrets.LETTER_CONTENT }}
-          PASSCODE_HASH: ${{ secrets.PASSCODE_HASH }}
+          CONFIG_CONTENT: ${{ secrets.CONFIG_CONTENT }}
         run: |
           cat > js/config.js << EOL
-          const CONFIG = {
-            passcode: {
-              hash: "${PASSCODE_HASH}",
-              placeholder: "How Many Kisses I've Given You? 💋",
-              errorMessage: "Nope, try again! 💕",
-            },
-            letter: ${LETTER_CONTENT}
-          };
+          const CONFIG = ${CONFIG_CONTENT};
 
           (function () {
             window.getConfig = function () {
