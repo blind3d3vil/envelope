@@ -223,9 +223,8 @@
 
 .heart {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 75px;
+  left: 150px;
   width: 30px;
   height: 30px;
   background: #ff3838;
@@ -296,6 +295,8 @@
   .heart {
     width: 25px;
     height: 25px;
+    left: 50%;
+    transform: translateX(-50%) rotate(-45deg);
   }
 
   .heart::before,
