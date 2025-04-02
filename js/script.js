@@ -3,18 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getConfigSafely = () => {
     try {
-      // Wait for config to be available
-      if (typeof window.CONFIG === "undefined") {
-        console.error("Config is not defined");
-        throw new Error("Config not found");
+      if (typeof window.getConfig !== "function") {
+        console.error("getConfig is not a function");
+        throw new Error("Config function not found");
       }
 
-      // Use CONFIG directly if getConfig is not available
-      const config =
-        typeof window.getConfig === "function"
-          ? window.getConfig()
-          : window.CONFIG;
-
+      const config = window.getConfig();
       console.log("Raw config:", config);
 
       if (!config) {
