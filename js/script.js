@@ -68,31 +68,28 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (passcodeInput) {
-    ["keyup", "keypress"].forEach((event) => {
-      passcodeInput.addEventListener(event, (e) => {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          checkPasscode();
-        }
-      });
+    // Handle Enter key press
+    passcodeInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        checkPasscode();
+      }
     });
 
-    passcodeInput.addEventListener("input", function () {
+    // Handle input validation
+    passcodeInput.addEventListener("input", function (e) {
+      // Remove any non-numeric characters
+      this.value = this.value.replace(/[^0-9]/g, "");
+
+      // Prevent negative numbers
       if (this.value < 0) this.value = 0;
+
+      // Clear error message when typing
       const errorMsg = document.getElementById("error-msg");
       const errorContainer = document.querySelector(".error-container");
       if (this.value) {
         errorMsg.classList.remove("show");
         errorContainer.classList.remove("show");
-      }
-    });
-
-    passcodeInput.addEventListener("keypress", (e) => {
-      if (
-        !/[\d]/.test(e.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)
-      ) {
-        e.preventDefault();
       }
     });
   }
