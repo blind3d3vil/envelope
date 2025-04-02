@@ -224,19 +224,16 @@
 .heart {
   position: absolute;
   top: 90px;
-  left: 150px;
-  width: 36px;
-  height: 36px;
-  background: #ff3838;
-  transform: translate(-50%, -50%) rotate(45deg);
-  z-index: 3;
-  animation: heartbeat 1.4s linear infinite;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  background: var(--heart-color);
+  transform-origin: center;
+  animation: pulse 0.75s ease-in-out infinite;
+  z-index: 4;
   cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-  user-select: none;
-  -webkit-user-select: none;
-  -webkit-touch-callout: none;
+  transition: all 0.3s ease;
 }
 
 .envelope.open .heart {
@@ -250,41 +247,73 @@
 .heart::after {
   content: "";
   position: absolute;
-  width: 36px;
-  height: 36px;
-  background: #ff3838;
+  width: 40px;
+  height: 40px;
+  background: var(--heart-color);
   border-radius: 50%;
-  pointer-events: none;
 }
 
 .heart::before {
-  top: -18px;
-  left: 0;
+  left: -20px;
 }
 
 .heart::after {
-  left: -18px;
-  top: 0;
+  top: -20px;
 }
 
-@keyframes heartbeat {
+@media (max-width: 768px) {
+  .heart {
+    width: 35px;
+    height: 35px;
+    top: 80px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 35px;
+    height: 35px;
+  }
+
+  .heart::before {
+    left: -17.5px;
+  }
+
+  .heart::after {
+    top: -17.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heart {
+    width: 30px;
+    height: 30px;
+    top: 70px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 30px;
+    height: 30px;
+  }
+
+  .heart::before {
+    left: -15px;
+  }
+
+  .heart::after {
+    top: -15px;
+  }
+}
+
+@keyframes pulse {
   0% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1);
-  }
-  25% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1);
-  }
-  30% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    transform: scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.4);
-  }
-  70% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    transform: scale(1.2);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(45deg) scale(1);
+    transform: scale(1);
   }
 }
 
