@@ -223,8 +223,9 @@
 
 .heart {
   position: absolute;
-  top: 75px;
-  left: 150px;
+  top: -15px;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
   width: 30px;
   height: 30px;
   background: #ff3838;
@@ -236,7 +237,6 @@
   touch-action: manipulation;
   user-select: none;
   -webkit-user-select: none;
-  transform: rotate(-45deg);
 }
 
 .envelope.open .heart {
@@ -268,22 +268,22 @@
 
 @keyframes heartbeat {
   0% {
-    transform: rotate(-45deg) scale(1);
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
   }
   25% {
-    transform: rotate(-45deg) scale(1);
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
   }
   30% {
-    transform: rotate(-45deg) scale(1.2);
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1.2);
   }
   50% {
-    transform: rotate(-45deg) scale(1.4);
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1.4);
   }
   70% {
-    transform: rotate(-45deg) scale(1.2);
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1.2);
   }
   100% {
-    transform: rotate(-45deg) scale(1);
+    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
   }
 }
 
@@ -295,8 +295,6 @@
   .heart {
     width: 25px;
     height: 25px;
-    left: 50%;
-    transform: translateX(-50%) rotate(-45deg);
   }
 
   .heart::before,
