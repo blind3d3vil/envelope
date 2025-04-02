@@ -1,25 +1,25 @@
 const CONFIG = {
   passcode: {
-    value: 1234, // Replace with your passcode
-    placeholder: "Enter passcode...",
-    errorMessage: "Wrong passcode, try again!",
+    value: 1234, // Your special number (anniversary date maybe?)
+    placeholder: "What's our special number?",
+    errorMessage: "Nope, try again! 💕",
   },
   letter: {
-    title: "Dear,",
+    title: "My Love,",
     paragraphs: [
-      "Your first paragraph here...",
-      "Your second paragraph here...",
-      "Your third paragraph here...",
-      "Your fourth paragraph here...",
+      "This is where your first sweet paragraph goes...",
+      "Maybe tell them why they're special here...",
+      "Share a special memory or moment...",
+      "End with something that'll make them smile...",
     ],
     signature: {
-      text: "With love,",
+      text: "Forever Yours,",
       name: "Your Name",
     },
   },
 };
 
-// Prevent direct access to config values in browser console
+// This keeps your message safe
 (function () {
   window.getConfig = function () {
     return JSON.parse(JSON.stringify(CONFIG));

@@ -1,35 +1,38 @@
 # Secret Love Letter 💌
 
-A digital love letter hidden in an interactive envelope. Perfect for sharing your feelings in a unique way.
+Want to share something special with someone you love? This is a digital love letter wrapped in a beautiful interactive envelope. They'll need a secret code to open it (make it meaningful! 😉).
 
-## What's This?
+## How it Works
 
-It's a web-based love letter that starts with a passcode (make it special!). Once opened, it reveals your message with some nice animations. The letter stays private - only people with the passcode can read it.
+1. They visit your page
+2. Enter the secret code you shared
+3. Click the beating heart to open the envelope
+4. Read your heartfelt message
+5. Close it and open again whenever they miss you
 
-## Setup
+## Quick Setup
 
-1. Clone this repo
+1. Download or clone this
 2. Copy `config.example.js` to `config.js`
-3. Edit `config.js` with your message and passcode
-4. Deploy it (GitHub Pages works great)
+3. Put your message and secret code in `config.js`
+4. Upload to GitHub Pages (or anywhere you like)
 
-## Customizing
+## Make it Yours
 
-In your `config.js`, you can change:
+Open `config.js` and change:
 
-- The passcode
-- Your letter content
-- Error messages
-- Pretty much any text you see
+- Your secret code (maybe your anniversary date? 💝)
+- Your love letter
+- Any text you want
 
 ## Privacy
 
-The letter content is protected in a few ways:
+Don't worry, your message stays secret:
 
-- Passcode protected
-- Content is encoded
-- Not visible in page source
+- Only opens with the right code
+- Content is hidden from nosy people
+- Can't be found in page source
 
-## Credits
+## Made With Love
 
-Made with ❤️ by [Dropkiler](https://github.com/blind3d3vil)
+By [Dropkiler](https://github.com/blind3d3vil) 💕

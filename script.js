@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
   const config = window.getConfig();
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
@@ -8,14 +8,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitBtn = document.getElementById("submit-btn");
   let isAnimating = false;
 
-  // Basic encryption for privacy
-  function protect(str) {
-    return btoa(encodeURIComponent(str));
-  }
-
-  function unprotect(str) {
-    return decodeURIComponent(atob(str));
-  }
+  // Hide the content from curious eyes
+  const protect = (str) => btoa(encodeURIComponent(str));
+  const unprotect = (str) => decodeURIComponent(atob(str));
 
   passcodeInput.placeholder = config.passcode.placeholder;
 
@@ -43,10 +38,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function checkPasscode() {
-    let inputVal = passcodeInput.value;
-    let errorMsg = document.getElementById("error-msg");
-    let errorContainer = document.querySelector(".error-container");
-    let wrapper = document.querySelector(".wrapper");
+    const inputVal = passcodeInput.value;
+    const errorMsg = document.getElementById("error-msg");
+    const errorContainer = document.querySelector(".error-container");
+    const wrapper = document.querySelector(".wrapper");
 
     if (parseInt(inputVal) === config.passcode.value) {
       wrapper.classList.add("show-envelope");
@@ -64,92 +59,73 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (submitBtn) {
     submitBtn.addEventListener("click", checkPasscode);
-    submitBtn.addEventListener("touchend", function (e) {
+    submitBtn.addEventListener("touchend", (e) => {
       e.preventDefault();
       checkPasscode();
     });
   }
 
   if (passcodeInput) {
-    // Handle Enter key press
-    passcodeInput.addEventListener("keyup", function (event) {
-      if (event.key === "Enter") {
-        checkPasscode();
-      }
+    ["keyup", "keypress"].forEach((event) => {
+      passcodeInput.addEventListener(event, (e) => {
+        if (e.key === "Enter") checkPasscode();
+      });
     });
 
-    passcodeInput.addEventListener("keypress", function (event) {
-      if (event.key === "Enter") {
-        checkPasscode();
-      }
-    });
-
-    // Clear error message when typing
     passcodeInput.addEventListener("input", function () {
-      if (this.value < 0) {
-        this.value = 0;
-      }
-      let errorMsg = document.getElementById("error-msg");
-      let errorContainer = document.querySelector(".error-container");
+      if (this.value < 0) this.value = 0;
+      const errorMsg = document.getElementById("error-msg");
+      const errorContainer = document.querySelector(".error-container");
       if (this.value) {
         errorMsg.classList.remove("show");
         errorContainer.classList.remove("show");
       }
     });
 
-    // Only allow numbers and navigation keys
-    passcodeInput.addEventListener("keypress", function (event) {
+    passcodeInput.addEventListener("keypress", (e) => {
       if (
-        !/[\d]/.test(event.key) &&
-        !["Backspace", "Delete", "ArrowLeft", "ArrowRight"].includes(event.key)
+        !/[\d]/.test(e.key) &&
+        !["Backspace", "Delete", "ArrowLeft", "ArrowRight"].includes(e.key)
       ) {
-        event.preventDefault();
+        e.preventDefault();
       }
     });
   }
 
   if (heart) {
-    const handleHeartClick = function (e) {
+    const handleHeartClick = (e) => {
       if (!isAnimating && !envelope.classList.contains("open")) {
         e.preventDefault();
         isAnimating = true;
         heart.style.opacity = "0";
         heart.style.visibility = "hidden";
 
-        setTimeout(function () {
-          envelope.classList.add("open");
-        }, 50);
+        setTimeout(() => envelope.classList.add("open"), 50);
 
-        setTimeout(function () {
+        setTimeout(() => {
           letter.style.visibility = "visible";
           letter.style.animation =
             "letterReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
 
           const protectedContent = letter.querySelector(".protected-content");
-          if (protectedContent) {
-            protectedContent.style.visibility = "visible";
-          }
+          if (protectedContent) protectedContent.style.visibility = "visible";
 
-          letter.addEventListener(
-            "animationend",
-            function () {
-              isAnimating = false;
-            },
-            { once: true }
-          );
+          letter.addEventListener("animationend", () => (isAnimating = false), {
+            once: true,
+          });
         }, 600);
       }
     };
 
     heart.addEventListener("click", handleHeartClick);
-    heart.addEventListener("touchend", function (e) {
+    heart.addEventListener("touchend", (e) => {
       e.preventDefault();
       handleHeartClick(e);
     });
   }
 
   if (closeBtn) {
-    const handleClose = function (e) {
+    const handleClose = (e) => {
       e.preventDefault();
       e.stopPropagation();
 
@@ -159,21 +135,17 @@ document.addEventListener("DOMContentLoaded", function () {
           "letterClose 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
 
         const protectedContent = letter.querySelector(".protected-content");
-        if (protectedContent) {
-          protectedContent.style.visibility = "hidden";
-        }
+        if (protectedContent) protectedContent.style.visibility = "hidden";
 
         letter.addEventListener(
           "animationend",
-          function () {
+          () => {
             envelope.classList.remove("open");
             letter.style.visibility = "hidden";
             letter.style.animation = "";
+            document.getElementById("letter-content").innerHTML = "";
 
-            const letterContent = document.getElementById("letter-content");
-            letterContent.innerHTML = "";
-
-            setTimeout(function () {
+            setTimeout(() => {
               heart.style.visibility = "visible";
               heart.style.opacity = "1";
               isAnimating = false;
@@ -189,18 +161,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   if (letter) {
-    letter.addEventListener("click", function (e) {
-      if (e.target !== closeBtn) {
-        e.stopPropagation();
-      }
+    letter.addEventListener("click", (e) => {
+      if (e.target !== closeBtn) e.stopPropagation();
     });
 
-    letter.addEventListener(
-      "touchmove",
-      function (e) {
-        e.stopPropagation();
-      },
-      { passive: true }
-    );
+    letter.addEventListener("touchmove", (e) => e.stopPropagation(), {
+      passive: true,
+    });
   }
 });
