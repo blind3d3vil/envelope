@@ -1,6 +1,6 @@
 const CONFIG = {
   passcode: {
-    value: 1234, // Your special number (anniversary date maybe?)
+    value: 1234,
     placeholder: "What's our special number?",
     errorMessage: "Nope, try again! 💕",
   },
@@ -19,7 +19,6 @@ const CONFIG = {
   },
 };
 
-// This keeps your message safe
 (function () {
   window.getConfig = function () {
     return JSON.parse(JSON.stringify(CONFIG));
