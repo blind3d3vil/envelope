@@ -25,18 +25,14 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Create config.js
-        env:
-          CONFIG_CONTENT: ${{ secrets.CONFIG_CONTENT }}
         run: |
-          cat > js/config.js << EOL
-          const CONFIG = ${CONFIG_CONTENT};
+          echo "const CONFIG = ${{ secrets.CONFIG_CONTENT }};
 
           (function () {
             window.getConfig = function () {
               return JSON.parse(JSON.stringify(CONFIG));
             };
-          })();
-          EOL
+          })();" > js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
