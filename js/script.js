@@ -3,9 +3,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getConfigSafely = () => {
     try {
+      if (typeof window.CONFIG === "undefined") {
+        console.error("CONFIG is not defined");
+        throw new Error("Configuration not found");
+      }
+
       if (typeof window.getConfig !== "function") {
-        console.error("getConfig is not a function");
-        throw new Error("Config function not found");
+        console.log("Falling back to direct CONFIG access");
+        return window.CONFIG;
       }
 
       const config = window.getConfig();

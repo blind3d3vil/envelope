@@ -26,12 +26,14 @@ jobs:
 
       - name: Create config.js
         run: |
+          mkdir -p js
           cat > js/config.js << 'EOL'
-          const CONFIG = {
+          // Configuration for the love letter
+          window.CONFIG = {
             hasPasscode: true,
             passcodeType: "number",
             passcode: {
-              value: PASSCODE_VALUE,
+              value: ${{ secrets.PASSCODE }},
               placeholder: "Enter number...",
               errorMessage: "Try again!"
             },
@@ -54,11 +56,14 @@ jobs:
             }
           };
 
+          // Function to safely access the configuration
           window.getConfig = function() {
-            return CONFIG;
-          };
+            return window.CONFIG;
+          }
           EOL
-          sed -i "s/PASSCODE_VALUE/${{ secrets.PASSCODE }}/g" js/config.js
+
+      - name: List files
+        run: ls -la js/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
