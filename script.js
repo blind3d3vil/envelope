@@ -1,9 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  if (typeof CONFIG === "undefined") {
-    console.error("Config file missing");
-    return;
-  }
-
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
   const letter = document.querySelector(".letter");
@@ -13,6 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Handle passcode input
   function checkPasscode() {
+    if (typeof CONFIG === "undefined") {
+      console.error("Config file missing");
+      return;
+    }
+
     let input = document.getElementById("passcode");
     let inputVal = input.value;
     let errorMsg = document.getElementById("error-msg");
@@ -80,6 +80,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Load letter content
   function loadLetterContent() {
+    if (typeof CONFIG === "undefined" || !CONFIG.letterContent) {
+      textContainer.innerHTML =
+        "<h1>Please enter the correct passcode to view this letter.</h1>";
+      return;
+    }
+
     const content = CONFIG.letterContent;
 
     const title = document.createElement("h1");
