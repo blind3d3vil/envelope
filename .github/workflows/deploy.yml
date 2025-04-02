@@ -24,39 +24,64 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Create js directory and config.js
+      - name: Prepare deployment
         run: |
+          # Create js directory if it doesn't exist
           mkdir -p js
-          echo 'window.CONFIG = {
+
+          # Create config.js with proper content
+          cat > js/config.js << 'EOL'
+          const config = {
             passcode: {
               value: ${{ secrets.PASSCODE }},
               placeholder: "Enter number...",
-              errorMessage: "Na Ah, Wrong number Azizam🚫"
+              errorMessage: "Try again!"
             },
             letter: {
-              title: "My Love,",
+              title: "My Love Letter",
               paragraphs: [
-                "There are feelings in this world that words can'\''t contain, emotions too vast for any sentence to hold. But if I could try—if I could give even a glimpse of what you mean to me—it would be this: You are my heart, my warmth, my forever.",
-                "Loving you isn'\''t something I choose—it'\''s something that just is. As natural as breathing, as certain as the sun rising each morning. It doesn'\''t begin and end with the days; it doesn'\''t depend on time, distance, or circumstances. It just exists—constant, unshaken, infinite.",
-                "You are the feeling of home, no matter where I stand. You are the quiet in my chaos, the light in my darkest moments. You are the person I'\''d find in every lifetime, in every world, no matter how many times I had to search.",
-                "And if ever a day comes when you forget just how deeply you are loved, remember this—there is not a single version of my life where you are not everything."
+                "Dear love...",
+                "You mean everything to me...",
+                "Forever yours..."
               ],
               signature: {
-                text: "I Love You In Every Universe,",
-                name: "Alireza"
+                text: "With all my love,",
+                name: "Your Secret Admirer"
               }
             }
           };
 
-          window.getConfig = function() {
-            return window.CONFIG;
-          };' > js/config.js
+          // Make config globally available
+          window.config = config;
 
-      - name: Verify files
-        run: |
-          echo "Checking if config.js exists:"
-          ls -l js/config.js
-          echo "Contents of config.js:"
+          // Define getConfig function
+          window.getConfig = function() {
+            try {
+              return JSON.parse(JSON.stringify(config));
+            } catch (error) {
+              console.error('Error in getConfig:', error);
+              return {
+                passcode: {
+                  value: 0,
+                  placeholder: "Enter number...",
+                  errorMessage: "Try again!",
+                },
+                letter: {
+                  title: "",
+                  paragraphs: [""],
+                  signature: { text: "", name: "" },
+                }
+              };
+            }
+          };
+          EOL
+
+          # Verify files
+          echo "Checking directory structure:"
+          ls -la
+          echo "Checking js directory:"
+          ls -la js/
+          echo "Checking config.js contents:"
           cat js/config.js
 
       - name: Upload artifact
