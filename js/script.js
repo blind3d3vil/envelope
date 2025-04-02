@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Debug logging for troubleshooting
   console.log("Script initialized");
 
-  // Ensure config exists and has default values if something goes wrong
   const getConfigSafely = () => {
     try {
       if (typeof window.getConfig !== "function") {
