@@ -24,16 +24,49 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Update config.js
+      - name: Create js directory and config.js
         run: |
-          # Replace the default passcode with the secret value
-          sed -i "s/value: 0,/value: ${{ secrets.PASSCODE }},/" js/config.js
+          # Create js directory if it doesn't exist
+          mkdir -p js
 
-          # Verify the file exists and was updated
-          echo "Contents of js directory:"
-          ls -la js/
-          echo "Config.js exists:"
-          test -f js/config.js && echo "Yes" || echo "No"
+          # Create config.js with proper content
+          echo 'const CONFIG = {
+            hasPasscode: true,
+            passcodeType: "number",
+            passcode: {
+              value: ${{ secrets.PASSCODE }},
+              placeholder: "Enter number...",
+              errorMessage: "Try again!"
+            },
+            letter: {
+              title: "My Love Letter",
+              paragraphs: [
+                "Dear love...",
+                "You mean everything to me...",
+                "Forever yours..."
+              ],
+              signature: {
+                text: "With all my love,",
+                name: "Your Secret Admirer"
+              }
+            },
+            ui: {
+              title: "Enter Secret Code",
+              submitButton: "Open Letter",
+              closeButton: "×"
+            }
+          };
+
+          window.getConfig = function() {
+            return CONFIG;
+          };' > js/config.js
+
+      - name: Verify files
+        run: |
+          echo "Checking if config.js exists:"
+          ls -l js/config.js
+          echo "Contents of config.js:"
+          cat js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
