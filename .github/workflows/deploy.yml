@@ -24,95 +24,53 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Prepare deployment
+      - name: Create config.js
         run: |
-          # Debug: Show current directory structure
-          echo "Current directory structure before changes:"
-          ls -la
+          # Create js directory if it doesn't exist
+          mkdir -p js
 
-          # Create the envelope directory and its subdirectories
-          mkdir -p envelope/js
-
-          # Copy all files to the envelope directory
-          cp -r assets envelope/
-          cp index.html envelope/
-          cp -r js/* envelope/js/ || true
-
-          # Create config.js with proper content
-          cat > envelope/js/config.js << 'EOL'
+          # Create config.js with the content from your secret
+          cat > js/config.js << 'EOL'
           const config = {
             passcode: {
               value: ${{ secrets.PASSCODE }},
-              placeholder: "Enter number...",
-              errorMessage: "Try again!"
+              placeholder: "How Many Kisses I've Given You? 💋",
+              errorMessage: "Na Ah, Wrong number Azizam🚫"
             },
             letter: {
-              title: "My Love Letter",
+              title: "My Love,",
               paragraphs: [
-                "Dear love...",
-                "You mean everything to me...",
-                "Forever yours..."
+                "There are feelings in this world that words can't contain, emotions too vast for any sentence to hold. But if I could try—if I could give even a glimpse of what you mean to me—it would be this: You are my heart, my warmth, my forever.",
+                "Loving you isn't something I choose—it's something that just is. As natural as breathing, as certain as the sun rising each morning. It doesn't begin and end with the days; it doesn't depend on time, distance, or circumstances. It just exists—constant, unshaken, infinite.",
+                "You are the feeling of home, no matter where I stand. You are the quiet in my chaos, the light in my darkest moments. You are the person I'd find in every lifetime, in every world, no matter how many times I had to search.",
+                "And if ever a day comes when you forget just how deeply you are loved, remember this—there is not a single version of my life where you are not everything."
               ],
               signature: {
-                text: "With all my love,",
-                name: "Your Secret Admirer"
+                text: "I Love You In Every Universe,",
+                name: "Alireza"
               }
             }
           };
 
-          // Make config globally available and log its creation
-          console.log("Initializing config...");
+          // Make config globally available
           window.config = config;
-          console.log("Config initialized:", config);
 
-          // Define getConfig function with better error handling
+          // Define getConfig function
           window.getConfig = function() {
-            console.log("getConfig called");
-            try {
-              if (!window.config) {
-                console.error("window.config is not defined");
-                throw new Error("Config not found");
-              }
-              const configCopy = JSON.parse(JSON.stringify(window.config));
-              console.log("Returning config:", configCopy);
-              return configCopy;
-            } catch (error) {
-              console.error('Error in getConfig:', error);
-              return {
-                passcode: {
-                  value: 0,
-                  placeholder: "Enter number...",
-                  errorMessage: "Try again!",
-                },
-                letter: {
-                  title: "",
-                  paragraphs: [""],
-                  signature: { text: "", name: "" },
-                }
-              };
-            }
+            return config;
           };
           EOL
 
-          # Copy script.js to envelope/js directory
-          if [ -f "js/script.js" ]; then
-            cp js/script.js envelope/js/
-          else
-            echo "Warning: script.js not found in js directory"
-          fi
-
-          # Debug: Show final directory structure
-          echo "Final directory structure:"
-          ls -la envelope/
-          echo "Contents of envelope/js directory:"
-          ls -la envelope/js/
+          # Verify config.js was created
+          echo "Verifying config.js exists:"
+          ls -l js/config.js
           echo "First few lines of config.js:"
-          head -n 5 envelope/js/config.js
+          head -n 5 js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "envelope"
+          path: "."
 
       - name: Deploy to GitHub Pages
         id: deployment
