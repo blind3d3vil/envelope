@@ -26,6 +26,10 @@ jobs:
 
       - name: Prepare deployment
         run: |
+          # Debug: Show current directory structure
+          echo "Current directory structure before changes:"
+          ls -la
+
           # Ensure the js directory exists
           mkdir -p js
 
@@ -51,17 +55,22 @@ jobs:
             }
           };
 
-          // Make config globally available
+          // Make config globally available and log its creation
+          console.log("Initializing config...");
           window.config = config;
+          console.log("Config initialized:", config);
 
           // Define getConfig function with better error handling
           window.getConfig = function() {
             console.log("getConfig called");
             try {
               if (!window.config) {
+                console.error("window.config is not defined");
                 throw new Error("Config not found");
               }
-              return JSON.parse(JSON.stringify(window.config));
+              const configCopy = JSON.parse(JSON.stringify(window.config));
+              console.log("Returning config:", configCopy);
+              return configCopy;
             } catch (error) {
               console.error('Error in getConfig:', error);
               return {
@@ -80,16 +89,23 @@ jobs:
           };
           EOL
 
-          # Copy script.js to ensure it's in the correct location
-          cp js/script.js js/script.js.bak || true
+          # Ensure script.js exists in js directory
+          if [ -f "js/script.js" ]; then
+            echo "script.js already exists in js directory"
+          else
+            echo "Copying script.js to js directory"
+            cp script.js js/script.js || echo "Failed to copy script.js"
+          fi
 
-          # Verify file structure and contents
-          echo "Checking directory structure:"
+          # Debug: Show final directory structure
+          echo "Final directory structure:"
           ls -la
-          echo "Checking js directory:"
+          echo "Contents of js directory:"
           ls -la js/
-          echo "Checking config.js contents:"
-          cat js/config.js
+          echo "First few lines of config.js:"
+          head -n 5 js/config.js
+          echo "Checking if script.js exists:"
+          ls -la js/script.js || echo "script.js not found"
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
