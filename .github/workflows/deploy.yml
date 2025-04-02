@@ -25,83 +25,34 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Prepare deployment files
+        env:
+          CONFIG_CONTENT: ${{ secrets.CONFIG_JS }}
         run: |
           # Debug: Show initial structure
           echo "Initial directory structure:"
           ls -la
 
-          # Create deployment directory structure
-          mkdir -p _site/js
-          mkdir -p _site/assets/css
+          # Create base directory
+          mkdir -p _site
 
-          # Copy all files first
-          cp index.html _site/
-          cp -r assets/* _site/assets/
-          cp js/script.js _site/js/
-          cp css/* _site/assets/css/
+          # Copy everything except .git and _site
+          rsync -av --exclude='.git' --exclude='_site' . _site/
 
-          # Create config.js with proper JavaScript structure
-          cat > _site/js/config.js << 'EOL'
-          window.CONFIG = {
-            passcode: {
-              value: 3000,
-              placeholder: "Enter number...",
-              errorMessage: "Na Ah, Wrong number Azizam🚫",
-            },
-            letter: {
-              title: "My Love,",
-              paragraphs: [
-                "There are feelings in this world that words can't contain, emotions too vast for any sentence to hold. But if I could try—if I could give even a glimpse of what you mean to me—it would be this: You are my heart, my warmth, my forever.",
-                "Loving you isn't something I choose—it's something that just is. As natural as breathing, as certain as the sun rising each morning. It doesn't begin and end with the days; it doesn't depend on time, distance, or circumstances. It just exists—constant, unshaken, infinite.",
-                "You are the feeling of home, no matter where I stand. You are the quiet in my chaos, the light in my darkest moments. You are the person I'd find in every lifetime, in every world, no matter how many times I had to search.",
-                "And if ever a day comes when you forget just how deeply you are loved, remember this—there is not a single version of my life where you are not everything.",
-              ],
-              signature: {
-                text: "I Love You In Every Universe,",
-                name: "Alireza",
-              },
-            },
-          };
-
-          // Define getConfig function
-          window.getConfig = function () {
-            try {
-              return JSON.parse(JSON.stringify(window.CONFIG));
-            } catch (error) {
-              console.error("Error in getConfig:", error);
-              return {
-                passcode: {
-                  value: 0,
-                  placeholder: "Enter number...",
-                  errorMessage: "Try again!",
-                },
-                letter: {
-                  title: "",
-                  paragraphs: [""],
-                  signature: { text: "", name: "" },
-                },
-              };
-            }
-          };
-          EOL
+          # Create config.js from secret
+          echo "$CONFIG_CONTENT" > _site/js/config.js
 
           # Debug: Show deployment structure
           echo "Final deployment structure:"
           find _site -type f
 
-          # Show file contents and sizes
-          echo "File contents and sizes:"
-          for file in _site/index.html _site/js/script.js _site/js/config.js _site/assets/css/*; do
-            echo "=== $file ==="
+          # Show file sizes (but not content for security)
+          echo "File sizes:"
+          for file in _site/index.html _site/js/script.js _site/js/config.js _site/assets/css/styles.css; do
             if [ -f "$file" ]; then
-              echo "Size: $(wc -c < "$file") bytes"
-              echo "First 5 lines:"
-              head -n 5 "$file"
-              echo "File exists ✅"
+              echo "$file: $(wc -c < "$file") bytes ✅"
             else
-              echo "WARNING: File missing ❌"
+              echo "$file: missing ❌"
             fi
-            echo
           done
 
       - name: Upload artifact
