@@ -232,10 +232,11 @@
   z-index: 3;
   animation: heartbeat 1.4s linear infinite;
   cursor: pointer;
-  pointer-events: auto;
-  transition: opacity 0.1s ease;
-  opacity: 1;
-  visibility: visible;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .envelope.open .heart {
@@ -319,12 +320,22 @@
   background: #ff5757;
   color: white;
   border: none;
-  padding: 8px 20px;
+  padding: 12px 30px;
   margin: 8px 0;
   cursor: pointer;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 16px;
   transition: background 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  min-width: 100px;
+}
+
+.passcode-screen button:active {
+  background: #ff3838;
+  transform: scale(0.98);
 }
 
 .error-container {
@@ -466,29 +477,65 @@ body {
   position: absolute;
   top: 15px;
   right: 15px;
-  width: 32px;
-  height: 32px;
-  background: #ff3838;
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  line-height: 1;
-  cursor: pointer;
-  z-index: 9999;
-  transition: all 0.3s ease;
-  pointer-events: all !important;
-  user-select: none;
+  width: 30px;
+  height: 30px;
+  background: none;
   border: none;
-  outline: none;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  z-index: 5;
+  padding: 8px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-.close-btn:hover {
-  transform: scale(1.1);
-  background: #ff2020;
+/* Improve touch area for mobile */
+@media (max-width: 768px) {
+  .heart {
+    width: 44px;
+    height: 44px;
+    transform: translate(-50%, -50%) rotate(45deg) scale(1.1);
+  }
+
+  .close-btn {
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+    top: 10px;
+    right: 10px;
+  }
+
+  .letter {
+    width: 85vw;
+    max-width: 400px;
+    height: 70vh;
+    max-height: 500px;
+    padding: 20px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .text {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  .text h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+  }
+
+  .passcode-screen button {
+    padding: 15px 35px;
+    font-size: 18px;
+    min-width: 120px;
+  }
+
+  .passcode-screen input {
+    font-size: 16px;
+    padding: 12px;
+    width: 200px;
+  }
 }
 
 /* Copyright text */
