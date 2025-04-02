@@ -26,7 +26,7 @@ jobs:
 
       - name: Prepare deployment
         run: |
-          # Create js directory if it doesn't exist
+          # Ensure the js directory exists
           mkdir -p js
 
           # Create config.js with proper content
@@ -54,10 +54,14 @@ jobs:
           // Make config globally available
           window.config = config;
 
-          // Define getConfig function
+          // Define getConfig function with better error handling
           window.getConfig = function() {
+            console.log("getConfig called");
             try {
-              return JSON.parse(JSON.stringify(config));
+              if (!window.config) {
+                throw new Error("Config not found");
+              }
+              return JSON.parse(JSON.stringify(window.config));
             } catch (error) {
               console.error('Error in getConfig:', error);
               return {
@@ -76,7 +80,10 @@ jobs:
           };
           EOL
 
-          # Verify files
+          # Copy script.js to ensure it's in the correct location
+          cp js/script.js js/script.js.bak || true
+
+          # Verify file structure and contents
           echo "Checking directory structure:"
           ls -la
           echo "Checking js directory:"
