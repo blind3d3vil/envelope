@@ -24,23 +24,38 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Create config.js
+      - name: Prepare deployment files
         run: |
-          # Create js directory
+          # Show initial structure
+          echo "Initial directory structure:"
+          ls -la
+
+          # Ensure js directory exists
           mkdir -p js
+
+          # Copy all necessary files to their locations
+          cp -r assets .
+          cp index.html .
+          cp js/script.js js/
 
           # Create config.js from secret
           echo "${{ secrets.CONFIG_JS }}" > js/config.js
 
-          # Verify config.js exists and has content
-          echo "Verifying config.js exists:"
-          ls -l js/config.js
-          echo "Checking if config.js has content:"
-          if [ -s js/config.js ]; then
-            echo "config.js is not empty"
-          else
-            echo "Warning: config.js is empty"
-          fi
+          # Debug: Show directory structure
+          echo "Final directory structure:"
+          ls -la
+          echo "Contents of js directory:"
+          ls -la js/
+
+          # Verify files exist and have content
+          echo "Verifying files:"
+          for file in index.html js/script.js js/config.js; do
+            if [ -f "$file" ]; then
+              echo "$file exists and size is: $(wc -c < "$file") bytes"
+            else
+              echo "WARNING: $file is missing!"
+            fi
+          done
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
