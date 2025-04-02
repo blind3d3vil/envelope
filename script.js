@@ -1,3 +1,30 @@
+// Make checkPasscode globally available
+function checkPasscode() {
+  if (typeof CONFIG === "undefined") {
+    console.error("Config file missing");
+    return;
+  }
+
+  let input = document.getElementById("passcode");
+  let inputVal = input.value;
+  let errorMsg = document.getElementById("error-msg");
+  let errorContainer = document.querySelector(".error-container");
+  let wrapper = document.querySelector(".wrapper");
+
+  // Compare as strings to match config.js format
+  if (inputVal === CONFIG.passcode) {
+    wrapper.classList.add("show-envelope");
+    errorMsg.classList.remove("show");
+    errorContainer.classList.remove("show");
+  } else {
+    errorMsg.innerText = "Wrong number";
+    errorMsg.classList.add("show");
+    errorContainer.classList.add("show");
+    input.value = "";
+    input.focus();
+  }
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
@@ -5,32 +32,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeBtn = document.querySelector(".close-btn");
   const textContainer = document.querySelector(".text");
   let isAnimating = false;
-
-  // Handle passcode input
-  function checkPasscode() {
-    if (typeof CONFIG === "undefined") {
-      console.error("Config file missing");
-      return;
-    }
-
-    let input = document.getElementById("passcode");
-    let inputVal = input.value;
-    let errorMsg = document.getElementById("error-msg");
-    let errorContainer = document.querySelector(".error-container");
-    let wrapper = document.querySelector(".wrapper");
-
-    if (parseInt(inputVal) === CONFIG.passcode) {
-      wrapper.classList.add("show-envelope");
-      errorMsg.classList.remove("show");
-      errorContainer.classList.remove("show");
-    } else {
-      errorMsg.innerText = "Wrong number";
-      errorMsg.classList.add("show");
-      errorContainer.classList.add("show");
-      input.value = "";
-      input.focus();
-    }
-  }
 
   // Passcode input handlers
   document
