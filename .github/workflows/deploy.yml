@@ -24,13 +24,14 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Create js directory
-        run: mkdir -p js
-
-      - name: Create config.js
+      - name: Prepare deployment
         run: |
+          # Ensure js directory exists
+          mkdir -p js
+
+          # Create config.js
           cat > js/config.js << 'EOL'
-          const CONFIG = {
+          window.CONFIG = {
             hasPasscode: true,
             passcodeType: "number",
             passcode: {
@@ -58,12 +59,17 @@ jobs:
           };
 
           window.getConfig = function() {
-            return CONFIG;
+            return window.CONFIG;
           };
           EOL
 
-      - name: List files
-        run: ls -la js/
+          # Verify files
+          echo "Contents of current directory:"
+          ls -la
+          echo "Contents of js directory:"
+          ls -la js/
+          echo "Contents of config.js:"
+          cat js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
