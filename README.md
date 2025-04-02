@@ -1,6 +1,6 @@
 # Secret Love Letter
 
-Want to share something special with someone you love? This is a digital love letter wrapped in a beautiful interactive envelope. They'll need a secret code to open it (make it meaningful! 😉).
+Want to share something special with someone you love? This is a digital love letter wrapped in a beautiful interactive envelope. They'll need a secret code to open it
 
 ## How it Works
 
@@ -39,7 +39,7 @@ Want to share something special with someone you love? This is a digital love le
 
 Open `config.js` and change:
 
-- Your secret code (maybe your anniversary date? 💝)
+- Your secret code
 - Your love letter
 - Any text you want
 
@@ -53,4 +53,4 @@ Don't worry, your message stays secret:
 
 ## Made With Love
 
-By [Dropkiler](https://github.com/blind3d3vil) 💕
+By [Dropkiler](https://github.com/blind3d3vil)
