@@ -223,9 +223,9 @@
 
 .heart {
   position: absolute;
-  top: -5px;
+  top: -140px;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(-45deg);
+  transform: translate(-50%, 50%) rotate(-45deg);
   width: 25px;
   height: 25px;
   background: #ff3838;
@@ -268,22 +268,22 @@
 
 @keyframes heartbeat {
   0% {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+    transform: translate(-50%, 50%) rotate(-45deg) scale(1);
   }
   25% {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+    transform: translate(-50%, 50%) rotate(-45deg) scale(1);
   }
   30% {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(1.2);
+    transform: translate(-50%, 50%) rotate(-45deg) scale(1.2);
   }
   50% {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(1.4);
+    transform: translate(-50%, 50%) rotate(-45deg) scale(1.4);
   }
   70% {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(1.2);
+    transform: translate(-50%, 50%) rotate(-45deg) scale(1.2);
   }
   100% {
-    transform: translate(-50%, -50%) rotate(-45deg) scale(1);
+    transform: translate(-50%, 50%) rotate(-45deg) scale(1);
   }
 }
 
@@ -292,6 +292,29 @@
 }
 
 @media (max-width: 768px) {
+  .heart {
+    width: 22px;
+    height: 22px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 22px;
+    height: 22px;
+  }
+
+  .heart::before {
+    top: -11px;
+    left: 0;
+  }
+
+  .heart::after {
+    top: 0;
+    left: 11px;
+  }
+}
+
+@media (max-width: 480px) {
   .heart {
     width: 20px;
     height: 20px;
@@ -311,29 +334,6 @@
   .heart::after {
     top: 0;
     left: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .heart {
-    width: 18px;
-    height: 18px;
-  }
-
-  .heart::before,
-  .heart::after {
-    width: 18px;
-    height: 18px;
-  }
-
-  .heart::before {
-    top: -9px;
-    left: 0;
-  }
-
-  .heart::after {
-    top: 0;
-    left: 9px;
   }
 }
 
