@@ -1,3 +1,6 @@
+# Ignore the real config file with sensitive content
+config.js
+
 # OS generated files
 .DS_Store
 .DS_Store?
@@ -22,15 +25,4 @@ package-lock.json
 .env.local
 .env.development.local
 .env.test.local
-.env.production.local
-
-# Config files with sensitive data
-config.js
-
-# IDE files
-.vscode/
-.idea/
-
-# OS files
-.DS_Store
-Thumbs.db 
+.env.production.local 
