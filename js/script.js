@@ -3,25 +3,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getConfigSafely = () => {
     try {
-      if (typeof window.getConfig !== "function") {
-        console.error("getConfig is not a function");
-        throw new Error("Config function not found");
+      // First try to get config from window object
+      if (window.config) {
+        console.log("Found config in window object");
+        return window.config;
       }
 
-      const config = window.getConfig();
-      console.log("Raw config:", config);
-
-      if (!config) {
-        throw new Error("Config is null or undefined");
+      // Then try to get config from getConfig function
+      if (typeof window.getConfig === "function") {
+        console.log("Using getConfig function");
+        const config = window.getConfig();
+        if (config) {
+          return config;
+        }
       }
 
-      if (!config.passcode || typeof config.passcode.value !== "number") {
-        console.error("Invalid passcode configuration:", config.passcode);
-        throw new Error("Invalid passcode configuration");
-      }
-
-      console.log("Config loaded successfully");
-      return config;
+      // If neither exists, use fallback config
+      console.warn("No config found, using fallback configuration");
+      return {
+        passcode: {
+          value: 0,
+          placeholder: "Enter number...",
+          errorMessage: "Try again!",
+        },
+        letter: {
+          title: "My Love Letter",
+          paragraphs: [
+            "Dear love...",
+            "You mean everything to me...",
+            "Forever yours...",
+          ],
+          signature: {
+            text: "With all my love,",
+            name: "Your Secret Admirer",
+          },
+        },
+      };
     } catch (e) {
       console.error("Config error:", e);
       return {
