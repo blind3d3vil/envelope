@@ -51,12 +51,12 @@ Don't worry, your message stays secret:
 - Content is hidden from nosy people
 - Can't be found in page source
 
+## Live Demo
+
+See the love letter in action: [Live Demo](https://blind3d3vil.github.io/)
+
+Want to create your own? Fork this repository and customize it for your special someone!
+
 ## Made With Love
 
 By [Dropkiler](https://github.com/blind3d3vil)
-
-## 🌐 Live Demo
-
-See the love letter in action: [Live Demo](https://blind3d3vil.github.io/) 💕
-
-Want to create your own? Fork this repository and customize it for your special someone! 💝
