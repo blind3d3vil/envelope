@@ -71,12 +71,47 @@ document.getElementById("passcode").addEventListener("input", function () {
 });
 
 // Add envelope and letter functionality
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function () {
+  // Check if config exists
+  if (typeof CONFIG === "undefined") {
+    console.error(
+      "Configuration file not found. Please create a config.js file."
+    );
+    return;
+  }
+
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
   const letter = document.querySelector(".letter");
   const closeBtn = document.querySelector(".close-btn");
+  const textContainer = document.querySelector(".text");
   let isAnimating = false;
+
+  // Load letter content from config
+  function loadLetterContent() {
+    const content = CONFIG.letterContent;
+
+    // Create title
+    const title = document.createElement("h1");
+    title.textContent = content.title;
+    textContainer.appendChild(title);
+
+    // Create paragraphs
+    content.paragraphs.forEach((text) => {
+      const p = document.createElement("p");
+      p.textContent = text;
+      textContainer.appendChild(p);
+    });
+
+    // Create signature
+    const signature = document.createElement("p");
+    signature.className = "signature";
+    signature.textContent = content.signature;
+    textContainer.appendChild(signature);
+  }
+
+  // Load content when the script starts
+  loadLetterContent();
 
   // Heart click opens the envelope
   heart.addEventListener("click", () => {
@@ -85,12 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
       heart.style.opacity = "0";
       heart.style.visibility = "hidden";
 
-      // Small delay before opening envelope
       setTimeout(() => {
         envelope.classList.add("open");
       }, 50);
 
-      // Wait for flap animation to complete before showing letter
       setTimeout(() => {
         letter.style.visibility = "visible";
         letter.style.animation =
@@ -125,7 +158,6 @@ document.addEventListener("DOMContentLoaded", () => {
             letter.style.visibility = "hidden";
             letter.style.animation = "";
 
-            // Show heart after envelope is closed
             setTimeout(() => {
               heart.style.visibility = "visible";
               heart.style.opacity = "1";
