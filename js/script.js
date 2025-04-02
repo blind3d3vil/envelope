@@ -5,14 +5,19 @@ document.addEventListener("DOMContentLoaded", () => {
       return (
         window.getConfig() || {
           passcode: {
-            value: 3000,
+            value: 0,
             placeholder: "Enter number...",
-            errorMessage: "Nope, try again! 💕",
+            errorMessage: "Try again!",
           },
           letter: {
-            title: "My Love,",
-            paragraphs: ["..."],
-            signature: { text: "Forever Yours,", name: "Your Name" },
+            title: "",
+            paragraphs: [""],
+            signature: { text: "", name: "" },
+          },
+          ui: {
+            title: "Enter Secret Code",
+            submitButton: "Open Letter",
+            closeButton: "×",
           },
         }
       );
@@ -20,14 +25,19 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Config error:", e);
       return {
         passcode: {
-          value: 3000,
+          value: 0,
           placeholder: "Enter number...",
-          errorMessage: "Nope, try again! 💕",
+          errorMessage: "Try again!",
         },
         letter: {
-          title: "My Love,",
-          paragraphs: ["..."],
-          signature: { text: "Forever Yours,", name: "Your Name" },
+          title: "",
+          paragraphs: [""],
+          signature: { text: "", name: "" },
+        },
+        ui: {
+          title: "Enter Secret Code",
+          submitButton: "Open Letter",
+          closeButton: "×",
         },
       };
     }
@@ -61,15 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  // Secure hash function for passcode verification
-  async function hashPasscode(input) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(input.toString());
-    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
-  }
-
   if (passcodeInput) {
     passcodeInput.placeholder = config.passcode.placeholder;
   }
@@ -99,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  async function checkPasscode(e) {
+  function checkPasscode(e) {
     if (e && e.preventDefault) {
       e.preventDefault();
     }
@@ -109,11 +110,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorContainer = document.querySelector(".error-container");
     const wrapper = document.querySelector(".wrapper");
 
-    if (!inputVal || !config.passcode.hash) return;
+    if (!inputVal || !config.passcode.value) return;
 
-    const inputHash = await hashPasscode(inputVal);
-
-    if (inputHash === config.passcode.hash) {
+    if (parseInt(inputVal) === config.passcode.value) {
       if (wrapper) wrapper.classList.add("show-envelope");
       if (errorMsg) errorMsg.classList.remove("show");
       if (errorContainer) errorContainer.classList.remove("show");
