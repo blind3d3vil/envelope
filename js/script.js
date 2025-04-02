@@ -37,7 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
   }
 
-  function checkPasscode() {
+  function checkPasscode(e) {
+    if (e) e.preventDefault();
+
     const inputVal = passcodeInput.value;
     const errorMsg = document.getElementById("error-msg");
     const errorContainer = document.querySelector(".error-container");
@@ -68,7 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (passcodeInput) {
     ["keyup", "keypress"].forEach((event) => {
       passcodeInput.addEventListener(event, (e) => {
-        if (e.key === "Enter") checkPasscode();
+        if (e.key === "Enter") {
+          e.preventDefault();
+          checkPasscode();
+        }
       });
     });
 
