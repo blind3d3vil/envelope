@@ -3,30 +3,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getConfigSafely = () => {
     try {
-      if (typeof window.CONFIG === "undefined") {
-        console.error("CONFIG is not defined");
-        throw new Error("Configuration not found");
-      }
-
-      if (typeof window.getConfig !== "function") {
-        console.log("Falling back to direct CONFIG access");
+      // First check if CONFIG is available directly
+      if (typeof window.CONFIG !== "undefined") {
+        console.log("Using direct CONFIG access");
         return window.CONFIG;
       }
 
-      const config = window.getConfig();
-      console.log("Raw config:", config);
-
-      if (!config) {
-        throw new Error("Config is null or undefined");
+      // Then try using getConfig function
+      if (typeof window.getConfig === "function") {
+        const config = window.getConfig();
+        console.log("Raw config:", config);
+        return config;
       }
 
-      if (!config.passcode || typeof config.passcode.value !== "number") {
-        console.error("Invalid passcode configuration:", config.passcode);
-        throw new Error("Invalid passcode configuration");
-      }
-
-      console.log("Config loaded successfully");
-      return config;
+      console.error("No configuration found");
+      throw new Error("Configuration not found");
     } catch (e) {
       console.error("Config error:", e);
       return {
