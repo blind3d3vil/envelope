@@ -221,7 +221,6 @@
   font-weight: 500;
 }
 
-/* Heart styles */
 .heart {
   position: absolute;
   z-index: 4;
@@ -233,8 +232,8 @@
   background-color: var(--heart-color);
   transform-origin: center;
   cursor: pointer;
-  transition: all 0.3s ease;
   animation: pulse 0.75s infinite;
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .heart::before,
@@ -245,7 +244,7 @@
   height: 40px;
   background-color: var(--heart-color);
   border-radius: 50%;
-  transition: all 0.3s ease;
+  transform-origin: center;
 }
 
 .heart::before {
@@ -256,12 +255,30 @@
   top: -20px;
 }
 
-.heart {
-  transform: translateX(-50%) rotate(45deg);
+/* Mobile-specific heart styles */
+@media screen and (max-width: 768px) {
+  .heart {
+    width: 35px;
+    height: 35px;
+    top: 85px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 35px;
+    height: 35px;
+  }
+
+  .heart::before {
+    left: -17.5px;
+  }
+
+  .heart::after {
+    top: -17.5px;
+  }
 }
 
-/* Mobile responsive styles */
-@media (max-width: 768px) {
+@media screen and (max-width: 480px) {
   .heart {
     width: 30px;
     height: 30px;
@@ -283,25 +300,22 @@
   }
 }
 
-@media (max-width: 480px) {
-  .heart {
-    width: 25px;
-    height: 25px;
-    top: 75px;
-  }
+.envelope.open .heart {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.1s ease, visibility 0s linear;
+}
 
-  .heart::before,
-  .heart::after {
-    width: 25px;
-    height: 25px;
+@keyframes pulse {
+  0% {
+    transform: scale(1);
   }
-
-  .heart::before {
-    left: -12.5px;
+  50% {
+    transform: scale(1.2);
   }
-
-  .heart::after {
-    top: -12.5px;
+  100% {
+    transform: scale(1);
   }
 }
 
