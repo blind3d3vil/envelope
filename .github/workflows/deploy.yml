@@ -24,12 +24,13 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Create js directory
+        run: mkdir -p js
+
       - name: Create config.js
         run: |
-          mkdir -p js
           cat > js/config.js << 'EOL'
-          // Configuration file for the love letter app
-          window.CONFIG = {
+          const CONFIG = {
             hasPasscode: true,
             passcodeType: "number",
             passcode: {
@@ -56,10 +57,9 @@ jobs:
             }
           };
 
-          // Function to safely access the config
           window.getConfig = function() {
-            return window.CONFIG;
-          }
+            return CONFIG;
+          };
           EOL
 
       - name: List files
