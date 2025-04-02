@@ -224,7 +224,7 @@
 .heart {
   position: absolute;
   top: 90px;
-  left: 50%;
+  left: 150px;
   width: 36px;
   height: 36px;
   background: #ff3838;
@@ -495,7 +495,6 @@ body {
   .heart {
     width: 32px;
     height: 32px;
-    top: 85px;
   }
 
   .heart::before,
@@ -556,7 +555,6 @@ body {
   .heart {
     width: 28px;
     height: 28px;
-    top: 80px;
   }
 
   .heart::before,
