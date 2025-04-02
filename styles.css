@@ -223,11 +223,11 @@
 
 .heart {
   position: absolute;
-  top: -15px;
+  top: -5px;
   left: 50%;
   transform: translate(-50%, -50%) rotate(-45deg);
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   background: #ff3838;
   transform-origin: center;
   z-index: 4;
@@ -250,20 +250,20 @@
 .heart::after {
   content: "";
   position: absolute;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   background: #ff3838;
   border-radius: 50%;
 }
 
 .heart::before {
-  top: -15px;
+  top: -12.5px;
   left: 0;
 }
 
 .heart::after {
   top: 0;
-  left: 15px;
+  left: 12.5px;
 }
 
 @keyframes heartbeat {
@@ -293,29 +293,6 @@
 
 @media (max-width: 768px) {
   .heart {
-    width: 25px;
-    height: 25px;
-  }
-
-  .heart::before,
-  .heart::after {
-    width: 25px;
-    height: 25px;
-  }
-
-  .heart::before {
-    top: -12.5px;
-    left: 0;
-  }
-
-  .heart::after {
-    top: 0;
-    left: 12.5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .heart {
     width: 20px;
     height: 20px;
   }
@@ -334,6 +311,29 @@
   .heart::after {
     top: 0;
     left: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heart {
+    width: 18px;
+    height: 18px;
+  }
+
+  .heart::before,
+  .heart::after {
+    width: 18px;
+    height: 18px;
+  }
+
+  .heart::before {
+    top: -9px;
+    left: 0;
+  }
+
+  .heart::after {
+    top: 0;
+    left: 9px;
   }
 }
 
