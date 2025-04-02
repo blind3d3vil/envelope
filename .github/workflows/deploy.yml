@@ -34,14 +34,15 @@ jobs:
           mkdir -p _site/js
           mkdir -p _site/assets/css
 
-          # Copy static files
+          # Copy all files first
           cp index.html _site/
           cp -r assets/* _site/assets/
           cp js/script.js _site/js/
+          cp css/* _site/assets/css/
 
           # Create config.js with proper JavaScript structure
           cat > _site/js/config.js << 'EOL'
-          const config = {
+          window.CONFIG = {
             passcode: {
               value: 3000,
               placeholder: "Enter number...",
@@ -62,13 +63,10 @@ jobs:
             },
           };
 
-          // Make config globally available
-          window.config = config;
-
           // Define getConfig function
           window.getConfig = function () {
             try {
-              return JSON.parse(JSON.stringify(config));
+              return JSON.parse(JSON.stringify(window.CONFIG));
             } catch (error) {
               console.error("Error in getConfig:", error);
               return {
@@ -93,7 +91,7 @@ jobs:
 
           # Show file contents and sizes
           echo "File contents and sizes:"
-          for file in _site/index.html _site/js/script.js _site/js/config.js; do
+          for file in _site/index.html _site/js/script.js _site/js/config.js _site/assets/css/*; do
             echo "=== $file ==="
             if [ -f "$file" ]; then
               echo "Size: $(wc -c < "$file") bytes"

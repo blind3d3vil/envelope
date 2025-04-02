@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const getConfigSafely = () => {
     try {
-      if (window.config) {
-        console.log("Found config in window object");
-        return window.config;
+      if (window.CONFIG) {
+        console.log("Found CONFIG in window object");
+        return window.CONFIG;
       }
 
       if (typeof window.getConfig === "function") {
