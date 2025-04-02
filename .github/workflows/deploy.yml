@@ -30,11 +30,16 @@ jobs:
           echo "Current directory structure before changes:"
           ls -la
 
-          # Ensure the js directory exists
-          mkdir -p js
+          # Create the envelope directory and its subdirectories
+          mkdir -p envelope/js
+
+          # Copy all files to the envelope directory
+          cp -r assets envelope/
+          cp index.html envelope/
+          cp -r js/* envelope/js/ || true
 
           # Create config.js with proper content
-          cat > js/config.js << 'EOL'
+          cat > envelope/js/config.js << 'EOL'
           const config = {
             passcode: {
               value: ${{ secrets.PASSCODE }},
@@ -89,28 +94,25 @@ jobs:
           };
           EOL
 
-          # Ensure script.js exists in js directory
+          # Copy script.js to envelope/js directory
           if [ -f "js/script.js" ]; then
-            echo "script.js already exists in js directory"
+            cp js/script.js envelope/js/
           else
-            echo "Copying script.js to js directory"
-            cp script.js js/script.js || echo "Failed to copy script.js"
+            echo "Warning: script.js not found in js directory"
           fi
 
           # Debug: Show final directory structure
           echo "Final directory structure:"
-          ls -la
-          echo "Contents of js directory:"
-          ls -la js/
+          ls -la envelope/
+          echo "Contents of envelope/js directory:"
+          ls -la envelope/js/
           echo "First few lines of config.js:"
-          head -n 5 js/config.js
-          echo "Checking if script.js exists:"
-          ls -la js/script.js || echo "script.js not found"
+          head -n 5 envelope/js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: "."
+          path: "envelope"
 
       - name: Deploy to GitHub Pages
         id: deployment
