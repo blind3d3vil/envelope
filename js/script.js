@@ -70,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
     submitBtn: !!submitBtn,
   });
 
-  // Hide the content from curious eyes with more robust error handling
   const protect = (str) => {
     try {
       return btoa(encodeURIComponent(str || ""));
@@ -182,16 +181,13 @@ document.addEventListener("DOMContentLoaded", () => {
       checkPasscode();
     };
 
-    // Add multiple event listeners for better compatibility
     submitBtn.addEventListener("click", handleSubmit);
     submitBtn.addEventListener("touchend", handleSubmit, { passive: false });
-    // Fallback onclick handler
     submitBtn.onclick = handleSubmit;
   }
 
   if (passcodeInput) {
     console.log("Setting up passcode input handlers");
-    // Handle Enter key press
     passcodeInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         console.log("Enter key pressed");
@@ -200,12 +196,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Handle input validation
     passcodeInput.addEventListener("input", function (e) {
-      // Remove any non-numeric characters
       this.value = this.value.replace(/[^0-9]/g, "");
 
-      // Clear error message when typing
       const errorMsg = document.getElementById("error-msg");
       const errorContainer = document.querySelector(".error-container");
       if (this.value && errorMsg && errorContainer) {
@@ -296,6 +289,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Final initialization check
   console.log("Script fully initialized");
 });
