@@ -25,10 +25,26 @@ jobs:
         uses: actions/configure-pages@v4
 
       - name: Create config.js
+        env:
+          LETTER_CONTENT: ${{ secrets.LETTER_CONTENT }}
+          PASSCODE: ${{ secrets.PASSCODE }}
         run: |
-          mkdir -p js
-          cp js/config.example.js js/config.js
-          sed -i 's/1234/3000/g' js/config.js
+          cat > js/config.js << EOL
+          const CONFIG = {
+            passcode: {
+              value: Number("${PASSCODE}"),
+              placeholder: "How Many Kisses I've Given You? 💋",
+              errorMessage: "Nope, try again! 💕",
+            },
+            letter: ${LETTER_CONTENT}
+          };
+
+          (function () {
+            window.getConfig = function () {
+              return JSON.parse(JSON.stringify(CONFIG));
+            };
+          })();
+          EOL
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
