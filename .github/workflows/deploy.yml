@@ -30,6 +30,9 @@ jobs:
           echo "Initial directory structure:"
           ls -la
 
+          # Create js directory if it doesn't exist
+          mkdir -p js
+
           # Create config.js from secret
           echo "${{ secrets.CONFIG_JS }}" > js/config.js
 
@@ -52,6 +55,10 @@ jobs:
           # Display config.js content length (without showing sensitive data)
           echo "Config.js content length:"
           wc -c < js/config.js
+
+          # Show the first line of config.js to verify structure (without showing sensitive data)
+          echo "First line of config.js:"
+          head -n 1 js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
