@@ -26,38 +26,34 @@ jobs:
 
       - name: Create config.js
         run: |
-          mkdir -p js
-          echo 'const CONFIG = {
+          echo "window.CONFIG = {
             passcode: {
               value: ${{ secrets.PASSCODE }},
-              placeholder: "Enter number...",
-              errorMessage: "Wrong number of kisses! Try again! 💋"
+              placeholder: 'Enter number...',
+              errorMessage: 'Try again!'
             },
             letter: {
-              title: "My Sweet Love Letter 💝",
+              title: 'My Love Letter',
               paragraphs: [
-                "My dearest...",
-                "Every kiss I give you is a token of my endless love for you.",
-                "Each number represents a moment we shared, a smile we exchanged, and a memory we created together.",
-                "You are my everything, my reason to smile, my source of joy.",
-                "I love you more with each passing day."
+                'Dear love...',
+                'You mean everything to me...',
+                'Forever yours...'
               ],
               signature: {
-                text: "Forever yours,",
-                name: "Your Secret Admirer 💕"
+                text: 'With all my love,',
+                name: 'Your Secret Admirer'
               }
             },
             ui: {
-              title: "Enter Secret Code",
-              submitButton: "Open Letter",
-              closeButton: "×"
+              title: 'Enter Secret Code',
+              submitButton: 'Open Letter',
+              closeButton: '×'
             }
           };
 
           window.getConfig = function() {
-            return CONFIG;
-          };' > js/config.js
-          cat js/config.js
+            return window.CONFIG;
+          };" > js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
