@@ -26,12 +26,13 @@ jobs:
 
       - name: Create config.js
         run: |
-          echo '(function(window) {
-            const CONFIG = {
+          mkdir -p js
+          echo 'window.getConfig = function() {
+            return {
               hasPasscode: true,
               passcodeType: "number",
               passcode: {
-                value: ${{ secrets.PASSCODE }},
+                value: Number(${{ secrets.PASSCODE }}),
                 placeholder: "Enter number...",
                 errorMessage: "Try again!"
               },
@@ -53,11 +54,7 @@ jobs:
                 closeButton: "×"
               }
             };
-
-            window.getConfig = function() {
-              return CONFIG;
-            };
-          })(window);' > js/config.js
+          };' > js/config.js
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
