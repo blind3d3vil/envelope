@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitBtn = document.getElementById("submit-btn");
   let isAnimating = false;
 
-  // Simple content protection
+  // Basic encryption for privacy
   function protect(str) {
     return btoa(encodeURIComponent(str));
   }
@@ -17,10 +17,8 @@ document.addEventListener("DOMContentLoaded", function () {
     return decodeURIComponent(atob(str));
   }
 
-  // Set up initial values from config
   passcodeInput.placeholder = config.passcode.placeholder;
 
-  // Store protected content
   const protectedContent = {
     title: protect(config.letter.title),
     paragraphs: config.letter.paragraphs.map((p) => protect(p)),
@@ -64,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Submit button handlers
   if (submitBtn) {
     submitBtn.addEventListener("click", checkPasscode);
     submitBtn.addEventListener("touchend", function (e) {
@@ -73,8 +70,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Passcode input handlers
   if (passcodeInput) {
+    // Handle Enter key press
     passcodeInput.addEventListener("keyup", function (event) {
       if (event.key === "Enter") {
         checkPasscode();
@@ -87,6 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    // Clear error message when typing
     passcodeInput.addEventListener("input", function () {
       if (this.value < 0) {
         this.value = 0;
@@ -99,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+    // Only allow numbers and navigation keys
     passcodeInput.addEventListener("keypress", function (event) {
       if (
         !/[\d]/.test(event.key) &&
@@ -109,7 +108,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Heart click/touch opens the envelope
   if (heart) {
     const handleHeartClick = function (e) {
       if (!isAnimating && !envelope.classList.contains("open")) {
@@ -127,7 +125,6 @@ document.addEventListener("DOMContentLoaded", function () {
           letter.style.animation =
             "letterReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
 
-          // Show content after animation
           const protectedContent = letter.querySelector(".protected-content");
           if (protectedContent) {
             protectedContent.style.visibility = "visible";
@@ -151,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Close button functionality
   if (closeBtn) {
     const handleClose = function (e) {
       e.preventDefault();
@@ -162,7 +158,6 @@ document.addEventListener("DOMContentLoaded", function () {
         letter.style.animation =
           "letterClose 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
 
-        // Hide content immediately
         const protectedContent = letter.querySelector(".protected-content");
         if (protectedContent) {
           protectedContent.style.visibility = "hidden";
@@ -175,7 +170,6 @@ document.addEventListener("DOMContentLoaded", function () {
             letter.style.visibility = "hidden";
             letter.style.animation = "";
 
-            // Clear content when closed
             const letterContent = document.getElementById("letter-content");
             letterContent.innerHTML = "";
 
@@ -194,7 +188,6 @@ document.addEventListener("DOMContentLoaded", function () {
     closeBtn.addEventListener("touchend", handleClose);
   }
 
-  // Prevent letter clicks from affecting envelope
   if (letter) {
     letter.addEventListener("click", function (e) {
       if (e.target !== closeBtn) {
