@@ -53,9 +53,9 @@ Don't worry, your message stays secret:
 
 ## 🌐 Live Demo
 
-See the love letter in action: [Live Demo](https://blind3d3vil.github.io/envelope/) 💕
+See the love letter in action: [Live Demo](https://blind3d3vil.github.io/envelope/)
 
-Want to create your own? Fork this repository and customize it for your special someone! 💝
+Want to create your own? Fork this repository and customize it for your special someone!
 
 ## Made With Love
 
