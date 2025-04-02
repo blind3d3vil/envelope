@@ -1,5 +1,39 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const config = window.getConfig();
+  // Ensure config exists and has default values if something goes wrong
+  const getConfigSafely = () => {
+    try {
+      return (
+        window.getConfig() || {
+          passcode: {
+            value: 3000,
+            placeholder: "Enter number...",
+            errorMessage: "Nope, try again! 💕",
+          },
+          letter: {
+            title: "My Love,",
+            paragraphs: ["..."],
+            signature: { text: "Forever Yours,", name: "Your Name" },
+          },
+        }
+      );
+    } catch (e) {
+      console.error("Config error:", e);
+      return {
+        passcode: {
+          value: 3000,
+          placeholder: "Enter number...",
+          errorMessage: "Nope, try again! 💕",
+        },
+        letter: {
+          title: "My Love,",
+          paragraphs: ["..."],
+          signature: { text: "Forever Yours,", name: "Your Name" },
+        },
+      };
+    }
+  };
+
+  const config = getConfigSafely();
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
   const letter = document.querySelector(".letter");
@@ -8,15 +42,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submit-btn");
   let isAnimating = false;
 
-  // Hide the content from curious eyes
-  const protect = (str) => btoa(encodeURIComponent(str));
-  const unprotect = (str) => decodeURIComponent(atob(str));
+  // Hide the content from curious eyes with more robust error handling
+  const protect = (str) => {
+    try {
+      return btoa(encodeURIComponent(str || ""));
+    } catch (e) {
+      console.error("Protection error:", e);
+      return btoa(encodeURIComponent(""));
+    }
+  };
 
-  passcodeInput.placeholder = config.passcode.placeholder;
+  const unprotect = (str) => {
+    try {
+      return decodeURIComponent(atob(str || ""));
+    } catch (e) {
+      console.error("Unprotection error:", e);
+      return "";
+    }
+  };
+
+  if (passcodeInput) {
+    passcodeInput.placeholder = config.passcode.placeholder;
+  }
 
   const protectedContent = {
     title: protect(config.letter.title),
-    paragraphs: config.letter.paragraphs.map((p) => protect(p)),
+    paragraphs: (config.letter.paragraphs || []).map((p) => protect(p)),
     signature: {
       text: protect(config.letter.signature.text),
       name: protect(config.letter.signature.name),
@@ -25,6 +76,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function loadLetterContent() {
     const letterContent = document.getElementById("letter-content");
+    if (!letterContent) return;
+
     letterContent.innerHTML = `
       <div class="protected-content" style="visibility: hidden">
         <h1>${unprotect(protectedContent.title)}</h1>
@@ -38,33 +91,44 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkPasscode(e) {
-    if (e) e.preventDefault();
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
 
-    const inputVal = passcodeInput.value;
+    const inputVal = passcodeInput ? passcodeInput.value : "";
     const errorMsg = document.getElementById("error-msg");
     const errorContainer = document.querySelector(".error-container");
     const wrapper = document.querySelector(".wrapper");
 
+    if (!inputVal || !config.passcode.value) return;
+
     if (parseInt(inputVal) === config.passcode.value) {
-      wrapper.classList.add("show-envelope");
-      errorMsg.classList.remove("show");
-      errorContainer.classList.remove("show");
+      if (wrapper) wrapper.classList.add("show-envelope");
+      if (errorMsg) errorMsg.classList.remove("show");
+      if (errorContainer) errorContainer.classList.remove("show");
       loadLetterContent();
     } else {
-      errorMsg.innerText = config.passcode.errorMessage;
-      errorMsg.classList.add("show");
-      errorContainer.classList.add("show");
-      passcodeInput.value = "";
-      passcodeInput.focus();
+      if (errorMsg) {
+        errorMsg.innerText = config.passcode.errorMessage;
+        errorMsg.classList.add("show");
+      }
+      if (errorContainer) errorContainer.classList.add("show");
+      if (passcodeInput) {
+        passcodeInput.value = "";
+        passcodeInput.focus();
+      }
     }
   }
 
   if (submitBtn) {
-    submitBtn.addEventListener("click", checkPasscode);
-    submitBtn.addEventListener("touchend", (e) => {
+    const handleSubmit = (e) => {
       e.preventDefault();
+      e.stopPropagation();
       checkPasscode();
-    });
+    };
+
+    submitBtn.addEventListener("click", handleSubmit);
+    submitBtn.addEventListener("touchend", handleSubmit);
   }
 
   if (passcodeInput) {
@@ -81,13 +145,10 @@ document.addEventListener("DOMContentLoaded", () => {
       // Remove any non-numeric characters
       this.value = this.value.replace(/[^0-9]/g, "");
 
-      // Prevent negative numbers
-      if (this.value < 0) this.value = 0;
-
       // Clear error message when typing
       const errorMsg = document.getElementById("error-msg");
       const errorContainer = document.querySelector(".error-container");
-      if (this.value) {
+      if (this.value && errorMsg && errorContainer) {
         errorMsg.classList.remove("show");
         errorContainer.classList.remove("show");
       }
@@ -145,7 +206,8 @@ document.addEventListener("DOMContentLoaded", () => {
             envelope.classList.remove("open");
             letter.style.visibility = "hidden";
             letter.style.animation = "";
-            document.getElementById("letter-content").innerHTML = "";
+            const letterContent = document.getElementById("letter-content");
+            if (letterContent) letterContent.innerHTML = "";
 
             setTimeout(() => {
               heart.style.visibility = "visible";
