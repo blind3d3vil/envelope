@@ -26,34 +26,38 @@ jobs:
 
       - name: Create config.js
         run: |
-          echo "window.CONFIG = {
+          cat > js/config.js << 'EOL'
+          const CONFIG = {
+            hasPasscode: true,
+            passcodeType: "number",
             passcode: {
               value: ${{ secrets.PASSCODE }},
-              placeholder: 'Enter number...',
-              errorMessage: 'Try again!'
+              placeholder: "Enter number...",
+              errorMessage: "Try again!"
             },
             letter: {
-              title: 'My Love Letter',
+              title: "My Love Letter",
               paragraphs: [
-                'Dear love...',
-                'You mean everything to me...',
-                'Forever yours...'
+                "Dear love...",
+                "You mean everything to me...",
+                "Forever yours..."
               ],
               signature: {
-                text: 'With all my love,',
-                name: 'Your Secret Admirer'
+                text: "With all my love,",
+                name: "Your Secret Admirer"
               }
             },
             ui: {
-              title: 'Enter Secret Code',
-              submitButton: 'Open Letter',
-              closeButton: '×'
+              title: "Enter Secret Code",
+              submitButton: "Open Letter",
+              closeButton: "×"
             }
           };
 
-          window.getConfig = function() {
-            return window.CONFIG;
-          };" > js/config.js
+          function getConfig() {
+            return CONFIG;
+          }
+          EOL
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
