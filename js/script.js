@@ -1,8 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // Debug logging for troubleshooting
+  console.log("Script initialized");
+
+  // Ensure config exists and has default values if something goes wrong
   const getConfigSafely = () => {
     try {
+      const config = window.getConfig();
+      console.log("Config loaded:", config ? "success" : "failed");
       return (
-        window.getConfig() || {
+        config || {
           passcode: {
             value: 0,
             placeholder: "Enter number...",
@@ -51,6 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submit-btn");
   let isAnimating = false;
 
+  // Debug logging for elements
+  console.log("Elements found:", {
+    envelope: !!envelope,
+    heart: !!heart,
+    letter: !!letter,
+    closeBtn: !!closeBtn,
+    passcodeInput: !!passcodeInput,
+    submitBtn: !!submitBtn,
+  });
+
   // Hide the content from curious eyes with more robust error handling
   const protect = (str) => {
     try {
@@ -84,8 +100,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function loadLetterContent() {
+    console.log("Loading letter content");
     const letterContent = document.getElementById("letter-content");
-    if (!letterContent) return;
+    if (!letterContent) {
+      console.error("Letter content element not found");
+      return;
+    }
 
     letterContent.innerHTML = `
       <div class="protected-content" style="visibility: hidden">
@@ -100,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkPasscode(e) {
+    console.log("Checking passcode");
     if (e && e.preventDefault) {
       e.preventDefault();
     }
@@ -109,14 +130,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorContainer = document.querySelector(".error-container");
     const wrapper = document.querySelector(".wrapper");
 
-    if (!inputVal || !config.passcode.value) return;
+    console.log("Input value:", inputVal);
+    console.log("Expected value:", config.passcode.value);
+
+    if (!inputVal || !config.passcode.value) {
+      console.error("Missing input value or passcode configuration");
+      return;
+    }
 
     if (parseInt(inputVal) === config.passcode.value) {
+      console.log("Passcode correct");
       if (wrapper) wrapper.classList.add("show-envelope");
       if (errorMsg) errorMsg.classList.remove("show");
       if (errorContainer) errorContainer.classList.remove("show");
       loadLetterContent();
     } else {
+      console.log("Passcode incorrect");
       if (errorMsg) {
         errorMsg.innerText = config.passcode.errorMessage;
         errorMsg.classList.add("show");
@@ -129,21 +158,33 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Directly bind click event
   if (submitBtn) {
-    const handleSubmit = (e) => {
+    console.log("Setting up submit button handlers");
+    submitBtn.onclick = (e) => {
+      console.log("Submit button clicked");
       e.preventDefault();
       e.stopPropagation();
       checkPasscode();
     };
 
-    submitBtn.addEventListener("click", handleSubmit);
-    submitBtn.addEventListener("touchend", handleSubmit);
+    submitBtn.addEventListener(
+      "touchend",
+      (e) => {
+        console.log("Submit button touched");
+        e.preventDefault();
+        checkPasscode();
+      },
+      { passive: false }
+    );
   }
 
   if (passcodeInput) {
+    console.log("Setting up passcode input handlers");
     // Handle Enter key press
     passcodeInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
+        console.log("Enter key pressed");
         e.preventDefault();
         checkPasscode();
       }
@@ -166,6 +207,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (heart) {
     const handleHeartClick = (e) => {
+      console.log("Heart clicked");
       if (!isAnimating && !envelope.classList.contains("open")) {
         e.preventDefault();
         isAnimating = true;
@@ -198,6 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (closeBtn) {
     const handleClose = (e) => {
+      console.log("Close button clicked");
       e.preventDefault();
       e.stopPropagation();
 
@@ -242,4 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
       passive: true,
     });
   }
+
+  // Final initialization check
+  console.log("Script fully initialized");
 });
