@@ -24,6 +24,12 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
+      - name: Create config.js from secrets
+        run: |
+          mkdir -p js
+          echo '${{ secrets.CONFIG_JS }}' > js/config.js
+          echo "Config file created successfully"
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
