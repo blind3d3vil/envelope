@@ -206,14 +206,19 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!isAnimating) {
           isAnimating = true;
           letter.style.animation = "letterHide 0.4s ease forwards";
+
           letter.addEventListener(
             "animationend",
             () => {
               letter.style.visibility = "hidden";
+              letter.style.opacity = "0";
               envelope.classList.remove("open");
-              heart.style.visibility = "visible";
-              heart.style.opacity = "1";
-              isAnimating = false;
+
+              setTimeout(() => {
+                heart.style.visibility = "visible";
+                heart.style.opacity = "1";
+                isAnimating = false;
+              }, 300);
             },
             { once: true }
           );
