@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const getConfigSafely = () => {
     try {
-      if (window.CONFIG) return window.CONFIG;
       if (window.config) return window.config;
       if (typeof window.getConfig === "function") {
         const config = window.getConfig();
@@ -133,33 +132,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (submitBtn) {
-    const newSubmitBtn = document.createElement("button");
-    newSubmitBtn.id = "submit-btn";
-    newSubmitBtn.textContent = "moah";
-    newSubmitBtn.className = submitBtn.className;
-
-    submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
-
     const handleSubmit = (e) => {
       e.preventDefault();
-      e.stopPropagation();
       checkPasscode();
     };
-    newSubmitBtn.addEventListener("click", handleSubmit);
-    newSubmitBtn.addEventListener("touchend", handleSubmit, { passive: false });
-    newSubmitBtn.addEventListener(
-      "touchstart",
-      (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      },
-      { passive: false }
-    );
 
-    newSubmitBtn.style.webkitTapHighlightColor = "transparent";
-    newSubmitBtn.style.touchAction = "manipulation";
-    newSubmitBtn.style.userSelect = "none";
-    newSubmitBtn.style.webkitUserSelect = "none";
+    submitBtn.addEventListener("click", handleSubmit);
+    submitBtn.addEventListener("touchend", handleSubmit);
+    submitBtn.onclick = handleSubmit;
   }
 
   if (passcodeInput) {
@@ -172,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     passcodeInput.addEventListener("input", function (e) {
       this.value = this.value.replace(/[^0-9]/g, "");
-      this.value = this.value.slice(0, 10);
 
       const errorMsg = document.getElementById("error-msg");
       const errorContainer = document.querySelector(".error-container");
@@ -181,32 +160,17 @@ document.addEventListener("DOMContentLoaded", () => {
         errorContainer.classList.remove("show");
       }
     });
-
-    passcodeInput.addEventListener("focus", () => {
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 100);
-    });
   }
 
   if (heart) {
     const handleHeartClick = (e) => {
       if (!isAnimating && !envelope.classList.contains("open")) {
         e.preventDefault();
-        e.stopPropagation();
         isAnimating = true;
         heart.style.opacity = "0";
         heart.style.visibility = "hidden";
 
-        const isMobile =
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-          );
-
-        const openDelay = isMobile ? 100 : 50;
-        const letterDelay = isMobile ? 800 : 600;
-
-        setTimeout(() => envelope.classList.add("open"), openDelay);
+        setTimeout(() => envelope.classList.add("open"), 50);
 
         setTimeout(() => {
           letter.style.visibility = "visible";
@@ -219,35 +183,20 @@ document.addEventListener("DOMContentLoaded", () => {
           letter.addEventListener("animationend", () => (isAnimating = false), {
             once: true,
           });
-        }, letterDelay);
+        }, 600);
       }
     };
 
     heart.addEventListener("click", handleHeartClick);
-    heart.addEventListener("touchend", handleHeartClick, { passive: false });
-    heart.addEventListener("touchstart", (e) => e.preventDefault(), {
-      passive: false,
-    });
+    heart.addEventListener("touchend", handleHeartClick);
   }
 
   if (closeBtn) {
     const handleClose = (e) => {
       e.preventDefault();
-      e.stopPropagation();
       if (!isAnimating) {
         isAnimating = true;
-
-        const isMobile =
-          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            navigator.userAgent
-          );
-
-        if (isMobile) {
-          letter.style.animation = "letterClose 0.6s ease forwards";
-        } else {
-          letter.style.animation = "letterHide 0.4s ease forwards";
-        }
-
+        letter.style.animation = "letterHide 0.4s ease forwards";
         letter.addEventListener(
           "animationend",
           () => {
@@ -263,19 +212,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     closeBtn.addEventListener("click", handleClose);
-    closeBtn.addEventListener("touchend", handleClose, { passive: false });
-    closeBtn.addEventListener("touchstart", (e) => e.preventDefault(), {
-      passive: false,
-    });
+    closeBtn.addEventListener("touchend", handleClose);
   }
-
-  document.addEventListener(
-    "touchend",
-    (e) => {
-      if (e.target.tagName !== "INPUT") {
-        e.preventDefault();
-      }
-    },
-    { passive: false }
-  );
 });
