@@ -48,85 +48,76 @@
     </div>
 
     <script>
-      // Simple XOR encryption
-      const ENCRYPTION_KEY = "love-letter-key-2024";
+      // Configuration with obfuscation
+      (function () {
+        // Simple obfuscation to make the config harder to read
+        const _0x5a2b = [
+          "value",
+          "passcode",
+          "placeholder",
+          "Enter number...",
+          "errorMessage",
+          "Na Ah, Wrong number Azizam🚫",
+          "title",
+          "My Love,",
+          "paragraphs",
+          "signature",
+          "text",
+          "I Love You In Every Universe,",
+          "name",
+          "Alireza",
+        ];
+        const _0x4f2d = function (_0x5a2b, _0x4f2d) {
+          _0x5a2b = _0x5a2b - 0;
+          return _0x5a2b[_0x4f2d];
+        };
 
-      function encrypt(text) {
-        let result = "";
-        for (let i = 0; i < text.length; i++) {
-          const charCode =
-            text.charCodeAt(i) ^
-            ENCRYPTION_KEY.charCodeAt(i % ENCRYPTION_KEY.length);
-          result += String.fromCharCode(charCode);
-        }
-        return btoa(result);
-      }
-
-      function decrypt(encoded) {
-        try {
-          const text = atob(encoded);
-          let result = "";
-          for (let i = 0; i < text.length; i++) {
-            const charCode =
-              text.charCodeAt(i) ^
-              ENCRYPTION_KEY.charCodeAt(i % ENCRYPTION_KEY.length);
-            result += String.fromCharCode(charCode);
-          }
-          return result;
-        } catch (e) {
-          console.error("Decryption failed:", e);
-          return "";
-        }
-      }
-
-      // Your encrypted configuration
-      const encryptedConfig =
-        "F00GBF4fBhsQAFAXEEcPTF5FVxZWXEZVHUBHBBgEEUgDChVJV0IQDk4qGBFIHkUaAQgQSBlLVwMQHBBRHh0ZF2AJFgcVAhcPUUc3TBJxWhhMOAQKQwtFGgEIEEgZRThXW0pTWfCkm4RUGAFOCREAERdfSV8CD0ZZRlgJTUxHYBVFOBsTFwFJSVtdU0JTUx4OBg1eTl8vVjEaSBkAWUxAVRJSCQoaDEMLFlQdC1JZAwwKDUVfQFgITwINTBhFAxsXFl5LBhhDFUQSVwMBAgREAklUEQgdWQIKF14SRF1bTBkXFllMAxsGRRNDEkUKSFxEV1oPClYRQkwNGxgBXA0pEA0NW1YSfUwMGRBBCEUABhzigaZEDUUwDVFfR1gITxEMWwlFEQIAHA0KRR5BW11CRwlPGQMNGw0VAEULQh5FFEhTXhJAA08bAOKAuQURVAMKB0EPRRtIEkRaXR9VVjxCGUUVBgBSQBJFEUhTQkYYTAIPRVoNFxkADV4NBhxZS11CV0IJHVhHAU4pGwIMHEpLHBZYEllBWksbVhZCAQAAHAwcSkssWU5aX11HCeKBux8RCh9FBxsIF1kDDBdKEkRaVRhPHBBeGEUdB0tSbBhFF0xGRUBVAE8XFg0OFxEVERpEBQJVDVNDElcJHQIERAJFFQdFBkUORQpYXBBAXR8GGAINCQQXHEUfQhkLEENVHhJ9GE8SCkgfC1MARRBIDAwXDVNeVhQJARJFWgURHFQRGkhLARhUQQsSXRhPEgpIHwtTAEUWSBsAF0kSX1wUGAYbAAFMAR0HERNDCABVDV1CElcFHRUQQB8RFRoGF15FRTBZElpHRxhPEx1EHxEH4oGgBh1DGBEYQ0YcEkECHB4ERgkLWFQMHEsCCxBZVx4QGE42GRANDRcRVBEaSEsDHEheWVxTTAAQRUUDCBFYRRxCSwgYWUZVQBQbBxMXSEwsVAcRE0MPS1l0XUUSVR4KVhFFCUUFAQwXWUsMFw1fSRJXBA4ZFgFMERwRRR5EDA0NDVteElkVTxIEXwcABwBFH0IGABdZQR4SbQMaVgRfCUUAHABSXQ4XCkJcEHsTCE8QDEMIRR0aRRdbDhcADV5ZVFEYBhsAAUwMGlQABEgZHFlaXUJeUEBPGAoNAQQAAAAADQMKDg1fUVxNTBsfCEgfRT1UDRNJSxEWDUFVU0YPB1hHAU4kGhBFG0tLAA9IQBBTFAgOD0VOAwgRB0UFRQ4LWVRdRRJSAx0RAFlMDwEHEVJFBBJZSVdVQlgVTw8KWEwEBhFFHkIdAB0BEkJXWQkCFABfTBEcHRbigaZZAwALSBJZQRQCAAJFTEwWHRoCHkhLExxfQVldWkwAEEVAFUUYHQMXDRwNHF9XEEtbGU8XF0hMCxsARRdbDhcAWVpZXFNCTStJDx8MExoEBlgZAFsXSRJGURQbVF8PJUU4GxMXDTIKDA17XhJxGgoEHA05Cx0CAABeDklbARBeU1kJTUxHbAAMBhEfEw8WGAQ=";
-
-      // Decrypt and parse the config
-      let config;
-      try {
-        const decrypted = decrypt(encryptedConfig);
-        config = JSON.parse(decrypted);
-      } catch (e) {
-        console.error("Failed to decrypt config:", e);
-        config = {
-          passcode: {
-            value: 0,
-            placeholder: "Enter number...",
-            errorMessage: "Try again!",
+        // Create config object
+        const config = {
+          [_0x4f2d("0x0", "0x0")]: {
+            [_0x4f2d("0x1", "0x1")]: 3000,
+            [_0x4f2d("0x2", "0x2")]: _0x4f2d("0x3", "0x3"),
+            [_0x4f2d("0x4", "0x4")]: _0x4f2d("0x5", "0x5"),
           },
           letter: {
-            title: "",
-            paragraphs: [""],
-            signature: { text: "", name: "" },
+            [_0x4f2d("0x6", "0x6")]: _0x4f2d("0x7", "0x7"),
+            [_0x4f2d("0x8", "0x8")]: [
+              "Every moment with you feels like a beautiful dream come true. Your smile brightens my darkest days, and your love gives me strength I never knew I had.",
+              "In you, I found not just a partner, but my best friend, my confidant, and my soulmate. You understand me in ways no one else does, and you love me despite my flaws.",
+              "I cherish every laugh we share, every tear we've wiped away, and every memory we've created together. You make my life complete in ways I never imagined possible.",
+              "You are my today and all of my tomorrows. I promise to love you more with each passing day, to support you in all your dreams, and to be by your side through every challenge life brings.",
+            ],
+            [_0x4f2d("0x9", "0x9")]: {
+              [_0x4f2d("0xa", "0xa")]: _0x4f2d("0xb", "0xb"),
+              [_0x4f2d("0xc", "0xc")]: _0x4f2d("0xd", "0xd"),
+            },
           },
         };
-      }
 
-      // Make config globally available
-      window.config = config;
+        // Make config globally available
+        window.config = config;
 
-      // Define getConfig function
-      window.getConfig = function () {
-        try {
-          return JSON.parse(JSON.stringify(config));
-        } catch (error) {
-          console.error("Error in getConfig:", error);
-          return {
-            passcode: {
-              value: 0,
-              placeholder: "Enter number...",
-              errorMessage: "Try again!",
-            },
-            letter: {
-              title: "",
-              paragraphs: [""],
-              signature: { text: "", name: "" },
-            },
-          };
-        }
-      };
+        // Define getConfig function
+        window.getConfig = function () {
+          try {
+            return JSON.parse(JSON.stringify(config));
+          } catch (error) {
+            console.error("Error in getConfig:", error);
+            return {
+              passcode: {
+                value: 0,
+                placeholder: "Enter number...",
+                errorMessage: "Try again!",
+              },
+              letter: {
+                title: "",
+                paragraphs: [""],
+                signature: { text: "", name: "" },
+              },
+            };
+          }
+        };
+      })();
     </script>
 
     <script src="./js/script.js"></script>
