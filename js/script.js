@@ -205,15 +205,26 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         if (!isAnimating) {
           isAnimating = true;
-          letter.style.animation = "letterHide 0.4s ease forwards";
+
+          // First hide the letter
+          letter.style.animation =
+            "letterClose 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
+          letter.style.visibility = "visible";
+
           letter.addEventListener(
             "animationend",
             () => {
+              // After letter is hidden, close the envelope
               letter.style.visibility = "hidden";
+              letter.style.opacity = "0";
               envelope.classList.remove("open");
-              heart.style.visibility = "visible";
-              heart.style.opacity = "1";
-              isAnimating = false;
+
+              // Wait for envelope to close, then show heart
+              setTimeout(() => {
+                heart.style.visibility = "visible";
+                heart.style.opacity = "1";
+                isAnimating = false;
+              }, 600);
             },
             { once: true }
           );
