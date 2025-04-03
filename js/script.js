@@ -132,17 +132,39 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (submitBtn) {
+    // Create a new button to replace the existing one
+    const newSubmitBtn = document.createElement("button");
+    newSubmitBtn.id = "submit-btn";
+    newSubmitBtn.textContent = "moah";
+    newSubmitBtn.className = submitBtn.className;
+
+    // Replace the old button with the new one
+    submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
+
+    // Add event listeners to the new button
     const handleSubmit = (e) => {
       e.preventDefault();
       e.stopPropagation();
       checkPasscode();
     };
 
-    submitBtn.addEventListener("click", handleSubmit);
-    submitBtn.addEventListener("touchend", handleSubmit, { passive: false });
-    submitBtn.addEventListener("touchstart", (e) => e.preventDefault(), {
-      passive: false,
-    });
+    // Add multiple event listeners for better compatibility
+    newSubmitBtn.addEventListener("click", handleSubmit);
+    newSubmitBtn.addEventListener("touchend", handleSubmit, { passive: false });
+    newSubmitBtn.addEventListener(
+      "touchstart",
+      (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      },
+      { passive: false }
+    );
+
+    // Add visual feedback styles
+    newSubmitBtn.style.webkitTapHighlightColor = "transparent";
+    newSubmitBtn.style.touchAction = "manipulation";
+    newSubmitBtn.style.userSelect = "none";
+    newSubmitBtn.style.webkitUserSelect = "none";
   }
 
   if (passcodeInput) {
@@ -181,7 +203,17 @@ document.addEventListener("DOMContentLoaded", () => {
         heart.style.opacity = "0";
         heart.style.visibility = "hidden";
 
-        setTimeout(() => envelope.classList.add("open"), 50);
+        // Check if we're on a mobile device
+        const isMobile =
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          );
+
+        // Adjust timing for mobile devices
+        const openDelay = isMobile ? 100 : 50;
+        const letterDelay = isMobile ? 800 : 600;
+
+        setTimeout(() => envelope.classList.add("open"), openDelay);
 
         setTimeout(() => {
           letter.style.visibility = "visible";
@@ -194,7 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
           letter.addEventListener("animationend", () => (isAnimating = false), {
             once: true,
           });
-        }, 600);
+        }, letterDelay);
       }
     };
 
@@ -211,7 +243,20 @@ document.addEventListener("DOMContentLoaded", () => {
       e.stopPropagation();
       if (!isAnimating) {
         isAnimating = true;
-        letter.style.animation = "letterHide 0.4s ease forwards";
+
+        // Check if we're on a mobile device
+        const isMobile =
+          /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+          );
+
+        // Use a different animation for mobile
+        if (isMobile) {
+          letter.style.animation = "letterClose 0.6s ease forwards";
+        } else {
+          letter.style.animation = "letterHide 0.4s ease forwards";
+        }
+
         letter.addEventListener(
           "animationend",
           () => {
