@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Add a small delay to ensure everything is loaded properly
   setTimeout(() => {
     const getConfigSafely = () => {
       try {
@@ -50,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const config = getConfigSafely();
-    console.log("Config loaded:", config); // Debug log
+    console.log("Config loaded:", config);
 
     const envelope = document.querySelector(".envelope");
     const heart = document.querySelector(".heart");
@@ -224,5 +223,5 @@ document.addEventListener("DOMContentLoaded", () => {
       closeBtn.addEventListener("click", handleClose);
       closeBtn.addEventListener("touchend", handleClose, { passive: false });
     }
-  }, 100); // Small delay to ensure everything is loaded
+  }, 100);
 });
