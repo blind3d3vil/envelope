@@ -31,6 +31,8 @@ body {
   overflow: hidden;
   position: fixed;
   width: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Main container */
@@ -150,12 +152,16 @@ body {
     position: fixed;
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
   }
 
   .letter {
     width: 85vw;
     height: 70vh;
     padding: 20px;
+    max-width: 400px;
+    max-height: 500px;
   }
 
   .text {
@@ -183,6 +189,25 @@ body {
     height: 40px;
     top: 10px;
     right: 10px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Improve input for mobile */
+  .passcode-screen input {
+    font-size: 18px;
+    padding: 12px;
+    width: 80%;
+    max-width: 250px;
+  }
+
+  /* Improve button for mobile */
+  .passcode-screen button {
+    font-size: 18px;
+    padding: 12px 20px;
+    margin-top: 15px;
   }
 }
 
