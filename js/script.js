@@ -1,218 +1,228 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const getConfigSafely = () => {
-    try {
-      if (window.CONFIG) return window.CONFIG;
-      if (typeof window.getConfig === "function") {
-        const config = window.getConfig();
-        if (config) return config;
-      }
-      return {
-        passcode: {
-          value: 0,
-          placeholder: "Enter number...",
-          errorMessage: "Try again!",
-        },
-        letter: {
-          title: "My Love Letter",
-          paragraphs: [
-            "Dear love...",
-            "You mean everything to me...",
-            "Forever yours...",
-          ],
-          signature: {
-            text: "With all my love,",
-            name: "Your Secret Admirer",
+  // Add a small delay to ensure everything is loaded properly
+  setTimeout(() => {
+    const getConfigSafely = () => {
+      try {
+        if (window.CONFIG) return window.CONFIG;
+        if (typeof window.getConfig === "function") {
+          const config = window.getConfig();
+          if (config) return config;
+        }
+        return {
+          passcode: {
+            value: 0,
+            placeholder: "Enter number...",
+            errorMessage: "Try again!",
           },
-        },
-      };
-    } catch (e) {
-      return {
-        passcode: {
-          value: 0,
-          placeholder: "Enter number...",
-          errorMessage: "Try again!",
-        },
-        letter: {
-          title: "",
-          paragraphs: [""],
-          signature: { text: "", name: "" },
-        },
-        ui: {
-          title: "Enter Secret Code",
-          submitButton: "Open Letter",
-          closeButton: "×",
-        },
-      };
-    }
-  };
-
-  const config = getConfigSafely();
-  const envelope = document.querySelector(".envelope");
-  const heart = document.querySelector(".heart");
-  const letter = document.querySelector(".letter");
-  const closeBtn = document.querySelector(".close-btn");
-  const passcodeInput = document.getElementById("passcode");
-  const submitBtn = document.getElementById("submit-btn");
-  let isAnimating = false;
-
-  const protect = (str) => {
-    try {
-      return btoa(encodeURIComponent(str || ""));
-    } catch {
-      return btoa(encodeURIComponent(""));
-    }
-  };
-
-  const unprotect = (str) => {
-    try {
-      return decodeURIComponent(atob(str || ""));
-    } catch {
-      return "";
-    }
-  };
-
-  if (passcodeInput) {
-    passcodeInput.placeholder = config.passcode.placeholder;
-  }
-
-  const protectedContent = {
-    title: protect(config.letter.title),
-    paragraphs: (config.letter.paragraphs || []).map((p) => protect(p)),
-    signature: {
-      text: protect(config.letter.signature.text),
-      name: protect(config.letter.signature.name),
-    },
-  };
-
-  function loadLetterContent() {
-    const letterContent = document.getElementById("letter-content");
-    if (!letterContent) return;
-
-    letterContent.innerHTML = `
-      <div class="protected-content" style="visibility: hidden">
-        <h1>${unprotect(protectedContent.title)}</h1>
-        ${protectedContent.paragraphs
-          .map((p) => `<p>${unprotect(p)}</p>`)
-          .join("")}
-        <p class="signature">${unprotect(protectedContent.signature.text)}</p>
-        <p class="signature">${unprotect(protectedContent.signature.name)}</p>
-      </div>
-    `;
-  }
-
-  function checkPasscode(e) {
-    if (e && e.preventDefault) {
-      e.preventDefault();
-    }
-
-    const inputVal = passcodeInput ? passcodeInput.value : "";
-    const errorMsg = document.getElementById("error-msg");
-    const errorContainer = document.querySelector(".error-container");
-    const wrapper = document.querySelector(".wrapper");
-
-    if (!inputVal || !config.passcode.value) return;
-
-    const parsedInput = parseInt(inputVal);
-    if (parsedInput === config.passcode.value) {
-      if (wrapper) wrapper.classList.add("show-envelope");
-      if (errorMsg) errorMsg.classList.remove("show");
-      if (errorContainer) errorContainer.classList.remove("show");
-      loadLetterContent();
-    } else {
-      if (errorMsg) {
-        errorMsg.innerText = config.passcode.errorMessage;
-        errorMsg.classList.add("show");
+          letter: {
+            title: "My Love Letter",
+            paragraphs: [
+              "Dear love...",
+              "You mean everything to me...",
+              "Forever yours...",
+            ],
+            signature: {
+              text: "With all my love,",
+              name: "Your Secret Admirer",
+            },
+          },
+        };
+      } catch (e) {
+        console.error("Error getting config:", e);
+        return {
+          passcode: {
+            value: 0,
+            placeholder: "Enter number...",
+            errorMessage: "Try again!",
+          },
+          letter: {
+            title: "",
+            paragraphs: [""],
+            signature: { text: "", name: "" },
+          },
+          ui: {
+            title: "Enter Secret Code",
+            submitButton: "Open Letter",
+            closeButton: "×",
+          },
+        };
       }
-      if (errorContainer) errorContainer.classList.add("show");
-      if (passcodeInput) {
-        passcodeInput.value = "";
-        passcodeInput.focus();
-      }
-    }
-  }
-
-  if (submitBtn) {
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      checkPasscode();
     };
 
-    submitBtn.addEventListener("click", handleSubmit);
-    submitBtn.addEventListener("touchend", handleSubmit, { passive: false });
-    submitBtn.onclick = handleSubmit;
-  }
+    const config = getConfigSafely();
+    console.log("Config loaded:", config); // Debug log
 
-  if (passcodeInput) {
-    passcodeInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        checkPasscode();
+    const envelope = document.querySelector(".envelope");
+    const heart = document.querySelector(".heart");
+    const letter = document.querySelector(".letter");
+    const closeBtn = document.querySelector(".close-btn");
+    const passcodeInput = document.getElementById("passcode");
+    const submitBtn = document.getElementById("submit-btn");
+    let isAnimating = false;
+
+    const protect = (str) => {
+      try {
+        return btoa(encodeURIComponent(str || ""));
+      } catch {
+        return btoa(encodeURIComponent(""));
       }
-    });
+    };
 
-    passcodeInput.addEventListener("input", function (e) {
-      this.value = this.value.replace(/[^0-9]/g, "");
+    const unprotect = (str) => {
+      try {
+        return decodeURIComponent(atob(str || ""));
+      } catch {
+        return "";
+      }
+    };
 
+    if (passcodeInput) {
+      passcodeInput.placeholder = config.passcode.placeholder;
+    }
+
+    const protectedContent = {
+      title: protect(config.letter.title),
+      paragraphs: (config.letter.paragraphs || []).map((p) => protect(p)),
+      signature: {
+        text: protect(config.letter.signature.text),
+        name: protect(config.letter.signature.name),
+      },
+    };
+
+    function loadLetterContent() {
+      const letterContent = document.getElementById("letter-content");
+      if (!letterContent) return;
+
+      letterContent.innerHTML = `
+        <div class="protected-content" style="visibility: hidden">
+          <h1>${unprotect(protectedContent.title)}</h1>
+          ${protectedContent.paragraphs
+            .map((p) => `<p>${unprotect(p)}</p>`)
+            .join("")}
+          <p class="signature">${unprotect(protectedContent.signature.text)}</p>
+          <p class="signature">${unprotect(protectedContent.signature.name)}</p>
+        </div>
+      `;
+    }
+
+    function checkPasscode(e) {
+      if (e && e.preventDefault) {
+        e.preventDefault();
+      }
+
+      const inputVal = passcodeInput ? passcodeInput.value : "";
       const errorMsg = document.getElementById("error-msg");
       const errorContainer = document.querySelector(".error-container");
-      if (this.value && errorMsg && errorContainer) {
-        errorMsg.classList.remove("show");
-        errorContainer.classList.remove("show");
-      }
-    });
-  }
+      const wrapper = document.querySelector(".wrapper");
 
-  if (heart) {
-    const handleHeartClick = (e) => {
-      if (!isAnimating && !envelope.classList.contains("open")) {
+      if (!inputVal || !config.passcode.value) return;
+
+      const parsedInput = parseInt(inputVal);
+      if (parsedInput === config.passcode.value) {
+        if (wrapper) wrapper.classList.add("show-envelope");
+        if (errorMsg) errorMsg.classList.remove("show");
+        if (errorContainer) errorContainer.classList.remove("show");
+        loadLetterContent();
+      } else {
+        if (errorMsg) {
+          errorMsg.innerText = config.passcode.errorMessage;
+          errorMsg.classList.add("show");
+        }
+        if (errorContainer) errorContainer.classList.add("show");
+        if (passcodeInput) {
+          passcodeInput.value = "";
+          passcodeInput.focus();
+        }
+      }
+    }
+
+    if (submitBtn) {
+      const handleSubmit = (e) => {
         e.preventDefault();
-        isAnimating = true;
-        heart.style.opacity = "0";
-        heart.style.visibility = "hidden";
+        e.stopPropagation();
+        checkPasscode();
+      };
 
-        setTimeout(() => envelope.classList.add("open"), 50);
+      submitBtn.addEventListener("click", handleSubmit);
+      submitBtn.addEventListener("touchend", handleSubmit, { passive: false });
+      submitBtn.onclick = handleSubmit;
+    }
 
-        setTimeout(() => {
-          letter.style.visibility = "visible";
-          letter.style.animation =
-            "letterReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
+    if (passcodeInput) {
+      passcodeInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          checkPasscode();
+        }
+      });
 
-          const protectedContent = letter.querySelector(".protected-content");
-          if (protectedContent) protectedContent.style.visibility = "visible";
+      passcodeInput.addEventListener("input", function (e) {
+        this.value = this.value.replace(/[^0-9]/g, "");
 
-          letter.addEventListener("animationend", () => (isAnimating = false), {
-            once: true,
-          });
-        }, 600);
-      }
-    };
+        const errorMsg = document.getElementById("error-msg");
+        const errorContainer = document.querySelector(".error-container");
+        if (this.value && errorMsg && errorContainer) {
+          errorMsg.classList.remove("show");
+          errorContainer.classList.remove("show");
+        }
+      });
+    }
 
-    heart.addEventListener("click", handleHeartClick);
-    heart.addEventListener("touchend", handleHeartClick, { passive: false });
-  }
+    if (heart) {
+      const handleHeartClick = (e) => {
+        if (!isAnimating && !envelope.classList.contains("open")) {
+          e.preventDefault();
+          isAnimating = true;
+          heart.style.opacity = "0";
+          heart.style.visibility = "hidden";
 
-  if (closeBtn) {
-    const handleClose = (e) => {
-      e.preventDefault();
-      if (!isAnimating) {
-        isAnimating = true;
-        letter.style.animation = "letterHide 0.4s ease forwards";
-        letter.addEventListener(
-          "animationend",
-          () => {
-            letter.style.visibility = "hidden";
-            envelope.classList.remove("open");
-            heart.style.visibility = "visible";
-            heart.style.opacity = "1";
-            isAnimating = false;
-          },
-          { once: true }
-        );
-      }
-    };
+          setTimeout(() => envelope.classList.add("open"), 50);
 
-    closeBtn.addEventListener("click", handleClose);
-    closeBtn.addEventListener("touchend", handleClose, { passive: false });
-  }
+          setTimeout(() => {
+            letter.style.visibility = "visible";
+            letter.style.animation =
+              "letterReveal 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
+
+            const protectedContent = letter.querySelector(".protected-content");
+            if (protectedContent) protectedContent.style.visibility = "visible";
+
+            letter.addEventListener(
+              "animationend",
+              () => (isAnimating = false),
+              {
+                once: true,
+              }
+            );
+          }, 600);
+        }
+      };
+
+      heart.addEventListener("click", handleHeartClick);
+      heart.addEventListener("touchend", handleHeartClick, { passive: false });
+    }
+
+    if (closeBtn) {
+      const handleClose = (e) => {
+        e.preventDefault();
+        if (!isAnimating) {
+          isAnimating = true;
+          letter.style.animation = "letterHide 0.4s ease forwards";
+          letter.addEventListener(
+            "animationend",
+            () => {
+              letter.style.visibility = "hidden";
+              envelope.classList.remove("open");
+              heart.style.visibility = "visible";
+              heart.style.opacity = "1";
+              isAnimating = false;
+            },
+            { once: true }
+          );
+        }
+      };
+
+      closeBtn.addEventListener("click", handleClose);
+      closeBtn.addEventListener("touchend", handleClose, { passive: false });
+    }
+  }, 100); // Small delay to ensure everything is loaded
 });
