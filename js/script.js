@@ -132,23 +132,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (submitBtn) {
-    // Create a new button to replace the existing one
     const newSubmitBtn = document.createElement("button");
     newSubmitBtn.id = "submit-btn";
     newSubmitBtn.textContent = "moah";
     newSubmitBtn.className = submitBtn.className;
 
-    // Replace the old button with the new one
     submitBtn.parentNode.replaceChild(newSubmitBtn, submitBtn);
 
-    // Add event listeners to the new button
     const handleSubmit = (e) => {
       e.preventDefault();
       e.stopPropagation();
       checkPasscode();
     };
-
-    // Add multiple event listeners for better compatibility
     newSubmitBtn.addEventListener("click", handleSubmit);
     newSubmitBtn.addEventListener("touchend", handleSubmit, { passive: false });
     newSubmitBtn.addEventListener(
@@ -160,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
       { passive: false }
     );
 
-    // Add visual feedback styles
     newSubmitBtn.style.webkitTapHighlightColor = "transparent";
     newSubmitBtn.style.touchAction = "manipulation";
     newSubmitBtn.style.userSelect = "none";
@@ -177,7 +171,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     passcodeInput.addEventListener("input", function (e) {
       this.value = this.value.replace(/[^0-9]/g, "");
-      this.value = this.value.slice(0, 10); // Limit input length
+      this.value = this.value.slice(0, 10);
 
       const errorMsg = document.getElementById("error-msg");
       const errorContainer = document.querySelector(".error-container");
@@ -203,13 +197,11 @@ document.addEventListener("DOMContentLoaded", () => {
         heart.style.opacity = "0";
         heart.style.visibility = "hidden";
 
-        // Check if we're on a mobile device
         const isMobile =
           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
             navigator.userAgent
           );
 
-        // Adjust timing for mobile devices
         const openDelay = isMobile ? 100 : 50;
         const letterDelay = isMobile ? 800 : 600;
 
@@ -244,13 +236,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!isAnimating) {
         isAnimating = true;
 
-        // Check if we're on a mobile device
         const isMobile =
           /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
             navigator.userAgent
           );
 
-        // Use a different animation for mobile
         if (isMobile) {
           letter.style.animation = "letterClose 0.6s ease forwards";
         } else {
