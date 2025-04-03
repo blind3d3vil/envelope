@@ -140,7 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     submitBtn.addEventListener("click", handleSubmit);
     submitBtn.addEventListener("touchend", handleSubmit, { passive: false });
-    submitBtn.onclick = handleSubmit;
+    submitBtn.addEventListener("touchstart", (e) => e.preventDefault(), {
+      passive: false,
+    });
   }
 
   if (passcodeInput) {
@@ -153,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     passcodeInput.addEventListener("input", function (e) {
       this.value = this.value.replace(/[^0-9]/g, "");
+      this.value = this.value.slice(0, 10); // Limit input length
 
       const errorMsg = document.getElementById("error-msg");
       const errorContainer = document.querySelector(".error-container");
@@ -161,12 +164,19 @@ document.addEventListener("DOMContentLoaded", () => {
         errorContainer.classList.remove("show");
       }
     });
+
+    passcodeInput.addEventListener("focus", () => {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
+    });
   }
 
   if (heart) {
     const handleHeartClick = (e) => {
       if (!isAnimating && !envelope.classList.contains("open")) {
         e.preventDefault();
+        e.stopPropagation();
         isAnimating = true;
         heart.style.opacity = "0";
         heart.style.visibility = "hidden";
@@ -190,11 +200,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     heart.addEventListener("click", handleHeartClick);
     heart.addEventListener("touchend", handleHeartClick, { passive: false });
+    heart.addEventListener("touchstart", (e) => e.preventDefault(), {
+      passive: false,
+    });
   }
 
   if (closeBtn) {
     const handleClose = (e) => {
       e.preventDefault();
+      e.stopPropagation();
       if (!isAnimating) {
         isAnimating = true;
         letter.style.animation = "letterHide 0.4s ease forwards";
@@ -214,5 +228,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     closeBtn.addEventListener("click", handleClose);
     closeBtn.addEventListener("touchend", handleClose, { passive: false });
+    closeBtn.addEventListener("touchstart", (e) => e.preventDefault(), {
+      passive: false,
+    });
   }
+
+  document.addEventListener(
+    "touchend",
+    (e) => {
+      if (e.target.tagName !== "INPUT") {
+        e.preventDefault();
+      }
+    },
+    { passive: false }
+  );
 });
