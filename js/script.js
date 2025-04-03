@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const getConfigSafely = () => {
     try {
       if (window.CONFIG) return window.CONFIG;
+      if (window.config) return window.config;
       if (typeof window.getConfig === "function") {
         const config = window.getConfig();
         if (config) return config;
