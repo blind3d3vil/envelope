@@ -1,10 +1,6 @@
-// Generate a random encryption key
-const ENCRYPTION_KEY =
-  Math.random().toString(36).substring(2, 15) +
-  Math.random().toString(36).substring(2, 15);
-console.log("Generated Encryption Key:", ENCRYPTION_KEY);
+// Encryption key - DO NOT CHANGE ONCE SET
+const ENCRYPTION_KEY = "love-letter-key-2024";
 
-// Encryption functions
 function encrypt(text) {
   let result = "";
   for (let i = 0; i < text.length; i++) {
@@ -12,14 +8,13 @@ function encrypt(text) {
       text.charCodeAt(i) ^ ENCRYPTION_KEY.charCodeAt(i % ENCRYPTION_KEY.length);
     result += String.fromCharCode(charCode);
   }
-  return Buffer.from(result).toString("base64"); // Convert to base64 using Buffer
+  return Buffer.from(result).toString("base64");
 }
 
 function encryptObject(obj) {
   return encrypt(JSON.stringify(obj));
 }
 
-// Your configuration
 const config = {
   passcode: {
     value: 3000,
@@ -41,12 +36,12 @@ const config = {
   },
 };
 
-// Encrypt the config
+// Generate encrypted config
 const encryptedConfig = encryptObject(config);
 console.log("\nEncrypted Config:");
 console.log(encryptedConfig);
 
-// Verify decryption works
+// Test decryption
 function decrypt(encoded) {
   try {
     const text = Buffer.from(encoded, "base64").toString();
@@ -73,7 +68,7 @@ function decryptObject(encoded) {
   }
 }
 
-// Test decryption
+// Verify decryption works
 const decryptedConfig = decryptObject(encryptedConfig);
-console.log("\nVerifying decryption:");
+console.log("\nVerifying decryption works:");
 console.log(JSON.stringify(decryptedConfig, null, 2));
