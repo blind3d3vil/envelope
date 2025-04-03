@@ -1,7 +1,3 @@
-// This is an example configuration file
-// Copy this file to config.js and replace the placeholder values with your actual content
-// Note: config.js is ignored by git and will be replaced during deployment
-
 const config = {
   passcode: {
     value: 1234,
@@ -22,10 +18,8 @@ const config = {
   },
 };
 
-// Make config globally available
 window.config = config;
 
-// Define getConfig function
 window.getConfig = function () {
   try {
     return JSON.parse(JSON.stringify(config));
