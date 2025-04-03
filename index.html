@@ -35,9 +35,7 @@
               <div class="heart"></div>
               <div class="letter">
                 <button class="close-btn">✕</button>
-                <div class="text" id="letter-content">
-                  <!-- Letter content will be loaded from encrypted config -->
-                </div>
+                <div class="text" id="letter-content"></div>
               </div>
             </div>
           </div>
@@ -49,15 +47,12 @@
       <a href="https://github.com/blind3d3vil" target="_blank">Dropkiler</a>
     </div>
 
-    <!-- Encryption helpers -->
     <script>
-      // Encryption key (must match the one used to encrypt)
-      const ENCRYPTION_KEY = "i2mwoeksm7acp6dm0vge7d";
+      const ENCRYPTION_KEY = "love-letter-key-2024";
 
-      // Decryption functions
       function decrypt(encoded) {
         try {
-          const text = atob(encoded); // Convert from base64
+          const text = atob(encoded);
           let result = "";
           for (let i = 0; i < text.length; i++) {
             const charCode =
@@ -80,15 +75,10 @@
           return null;
         }
       }
-    </script>
 
-    <!-- Encrypted config -->
-    <script>
-      // This is your encrypted configuration
       const encryptedConfig =
-        "EhAdFhwWCBwJUkNZCxQSDFwDAkcNV1kCXVtNFQcSDlIJDBxSAR8STEUgWRAMQE0ZGggJFh8ZT01SGkYIQgQIF3oBGkEMEApPXE86GElJDAEFDxpSEU5eEwNSHwMIFE9UERIdBBIIA1ZJEX4LEStSCgUIFRlOJl8fCERIRAQSQVIVQw5HAwRPXDZML0YMHx9ECxseVl0GERheHx9NHwIbSlYMCAoXRhgaWFZSUE9VDhYYEgQIH1xJCRQBBxlTUFwfVE9DGQIISE03BUUbTRUJDxgWE1EAWAhfHxIDFU0DExANDB9IRg0cRkFSXQ5CDB9NAAQCBkNJAB9EDhESQUdSRgZDA1cHCRRCSlEHCUYdCQEBE18dRwoXBhYGAx5OB1VJCwMBClQQXF4CXQpDDllPSk8nSlMBCBQNFRxTVkUXQxYXBhIACR8XSkcMShABRhcBVlIGVAsXHxgKAxkGD0JFTQAWCRlTXEYAEQleGQQZRgALD0QAAwFEEhtTUl8eERtfDlcMAhsLBEQcHwMXRgMWFEUXERxfCgUIAkNOM18cShABRhkSV1ZSXBYXBx4LA00dBRAEGAUMRhkcQVZSXApWBR4DAQsbBhAIAwJEBBESRkcbVxpbRVVBRCROGkIGAA8XA1QHXBMeXhlSSw4CE00DBUIMTRENEhxTVlIRWU9HCgQeDwMJSlQIFEpEEhtTQEYCQQBFH1cUCRhOA15JDAoIRg0cRkFSVR1SChoeSk0PBFRJGQlEBBFTSlwHQ09HCgUZCAgcSlkHTRIMDwdTUVYTRBteDQIBRgcBH0IHCB9ECRJTX1oUVEEVNltPFQQJBFEdGBQBRE4IEUcXSRsVUVUrCR8LHFUbTR8LEwYAHxFeEwFWBhJPXE83BUUbTTUBBQYWRxMzVQJeGRIfRBATFw==";
+        "F00GBF4fBhsQAFAXEEcPTF5FVxZWXEZVHUBHBBgEEUgDChVJV0IQDk4qGBFIHkUaAQgQSBlLVwMQHBBRHh0ZF2AJFgcVAhcPUUc3TBJxWhhMOAQKQwtFGgEIEEgZRThXW0pTWfCkm4RUGAFOCREAERdfSV8CD0ZZRlgJTUxHYBVFOBsTFwFJSVtdU0JTUx4OBg1eTl8vVjEaSBkAWUxAVRJSCQoaDEMLFlQdC1JZAwwKDUVfQFgITwINTBhFAxsXFl5LBhhDFUQSVwMBAgREAklUEQgdWQIKF14SRF1bTBkXFllMAxsGRRNDEkUKSFxEV1oPClYRQkwNGxgBXA0pEA0NW1YSfUwMGRBBCEUABhzigaZEDUUwDVFfR1gITxEMWwlFEQIAHA0KRR5BW11CRwlPGQMNGw0VAEULQh5FFEhTXhJAA08bAOKAuQURVAMKB0EPRRtIEkRaXR9VVjxCGUUVBgBSQBJFEUhTQkYYTAIPRVoNFxkADV4NBhxZS11CV0IJHVhHAU4pGwIMHEpLHBZYEllBWksbVhZCAQAAHAwcSkssWU5aX11HCeKBux8RCh9FBxsIF1kDDBdKEkRaVRhPHBBeGEUdB0tSbBhFF0xGRUBVAE8XFg0OFxEVERpEBQJVDVNDElcJHQIERAJFFQdFBkUORQpYXBBAXR8GGAINCQQXHEUfQhkLEENVHhJ9GE8SCkgfC1MARRBIDAwXDVNeVhQJARJFWgURHFQRGkhLARhUQQsSXRhPEgpIHwtTAEUWSBsAF0kSX1wUGAYbAAFMAR0HERNDCABVDV1CElcFHRUQQB8RFRoGF15FRTBZElpHRxhPEx1EHxEH4oGgBh1DGBEYQ0YcEkECHB4ERgkLWFQMHEsCCxBZVx4QGE42GRANDRcRVBEaSEsDHEheWVxTTAAQRUUDCBFYRRxCSwgYWUZVQBQbBxMXSEwsVAcRE0MPS1l0XUUSVR4KVhFFCUUFAQwXWUsMFw1fSRJXBA4ZFgFMERwRRR5EDA0NDVteElkVTxIEXwcABwBFH0IGABdZQR4SbQMaVgRfCUUAHABSXQ4XCkJcEHsTCE8QDEMIRR0aRRdbDhcADV5ZVFEYBhsAAUwMGlQABEgZHFlaXUJeUEBPGAoNAQQAAAAADQMKDg1fUVxNTBsfCEgfRT1UDRNJSxEWDUFVU0YPB1hHAU4kGhBFG0tLAA9IQBBTFAgOD0VOAwgRB0UFRQ4LWVRdRRJSAx0RAFlMDwEHEVJFBBJZSVdVQlgVTw8KWEwEBhFFHkIdAB0BEkJXWQkCFABfTBEcHRbigaZZAwALSBJZQRQCAAJFTEwWHRoCHkhLExxfQVldWkwAEEVAFUUYHQMXDRwNHF9XEEtbGU8XF0hMCxsARRdbDhcAWVpZXFNCTStJDx8MExoEBlgZAFsXSRJGURQbVF8PJUU4GxMXDTIKDA17XhJxGgoEHA05Cx0CAABeDklbARBeU1kJTUxHbAAMBhEfEw8WGAQ=";
 
-      // Setup the config
       const config = decryptObject(encryptedConfig) || {
         passcode: {
           value: 0,
@@ -102,10 +92,8 @@
         },
       };
 
-      // Make config globally available
       window.config = config;
 
-      // Define getConfig function
       window.getConfig = function () {
         try {
           return JSON.parse(JSON.stringify(config));
@@ -127,7 +115,6 @@
       };
     </script>
 
-    <!-- Load main script -->
     <script src="./js/script.js"></script>
   </body>
 </html>
