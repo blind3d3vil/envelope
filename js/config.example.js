@@ -18,12 +18,13 @@ const config = {
   },
 };
 
-window.config = config;
+window.CONFIG = config;
 
 window.getConfig = function () {
   try {
     return JSON.parse(JSON.stringify(config));
-  } catch {
+  } catch (error) {
+    console.error("Error in getConfig:", error);
     return {
       passcode: {
         value: 0,
