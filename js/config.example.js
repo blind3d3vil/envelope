@@ -4,7 +4,7 @@
 
 const config = {
   passcode: {
-    value: 1234, // Replace with your actual passcode
+    value: 1234,
     placeholder: "Enter number...",
     errorMessage: "Wrong number! Try again!",
   },
@@ -30,7 +30,6 @@ window.getConfig = function () {
   try {
     return JSON.parse(JSON.stringify(config));
   } catch (error) {
-    console.error("Error in getConfig:", error);
     return {
       passcode: {
         value: 0,
