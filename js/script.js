@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const getConfigSafely = () => {
     try {
-      if (window.config) return window.config;
+      if (window.CONFIG) return window.CONFIG;
       if (typeof window.getConfig === "function") {
         const config = window.getConfig();
         if (config) return config;
@@ -134,11 +134,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (submitBtn) {
     const handleSubmit = (e) => {
       e.preventDefault();
+      e.stopPropagation();
       checkPasscode();
     };
 
     submitBtn.addEventListener("click", handleSubmit);
-    submitBtn.addEventListener("touchend", handleSubmit);
+    submitBtn.addEventListener("touchend", handleSubmit, { passive: false });
     submitBtn.onclick = handleSubmit;
   }
 
@@ -188,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     heart.addEventListener("click", handleHeartClick);
-    heart.addEventListener("touchend", handleHeartClick);
+    heart.addEventListener("touchend", handleHeartClick, { passive: false });
   }
 
   if (closeBtn) {
@@ -212,6 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     closeBtn.addEventListener("click", handleClose);
-    closeBtn.addEventListener("touchend", handleClose);
+    closeBtn.addEventListener("touchend", handleClose, { passive: false });
   }
 });
