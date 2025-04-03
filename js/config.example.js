@@ -23,7 +23,7 @@ window.config = config;
 window.getConfig = function () {
   try {
     return JSON.parse(JSON.stringify(config));
-  } catch (error) {
+  } catch {
     return {
       passcode: {
         value: 0,

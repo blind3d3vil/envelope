@@ -1,21 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("Script initialized");
-
   const getConfigSafely = () => {
     try {
-      if (window.CONFIG) {
-        console.log("Found CONFIG in window object");
-        return window.CONFIG;
-      }
-
+      if (window.CONFIG) return window.CONFIG;
       if (typeof window.getConfig === "function") {
-        console.log("Using getConfig function");
         const config = window.getConfig();
-        if (config) {
-          return config;
-        }
+        if (config) return config;
       }
-      console.warn("No config found, using fallback configuration");
       return {
         passcode: {
           value: 0,
@@ -36,7 +26,6 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       };
     } catch (e) {
-      console.error("Config error:", e);
       return {
         passcode: {
           value: 0,
@@ -58,13 +47,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const config = getConfigSafely();
-  console.log("Using config:", {
-    hasPasscode: !!config.passcode,
-    passcodeType: typeof config.passcode.value,
-    hasLetter: !!config.letter,
-    ui: !!config.ui,
-  });
-
   const envelope = document.querySelector(".envelope");
   const heart = document.querySelector(".heart");
   const letter = document.querySelector(".letter");
@@ -73,21 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitBtn = document.getElementById("submit-btn");
   let isAnimating = false;
 
-  // Debug logging for elements
-  console.log("Elements found:", {
-    envelope: !!envelope,
-    heart: !!heart,
-    letter: !!letter,
-    closeBtn: !!closeBtn,
-    passcodeInput: !!passcodeInput,
-    submitBtn: !!submitBtn,
-  });
-
   const protect = (str) => {
     try {
       return btoa(encodeURIComponent(str || ""));
-    } catch (e) {
-      console.error("Protection error:", e);
+    } catch {
       return btoa(encodeURIComponent(""));
     }
   };
@@ -95,8 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const unprotect = (str) => {
     try {
       return decodeURIComponent(atob(str || ""));
-    } catch (e) {
-      console.error("Unprotection error:", e);
+    } catch {
       return "";
     }
   };
@@ -115,12 +85,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function loadLetterContent() {
-    console.log("Loading letter content");
     const letterContent = document.getElementById("letter-content");
-    if (!letterContent) {
-      console.error("Letter content element not found");
-      return;
-    }
+    if (!letterContent) return;
 
     letterContent.innerHTML = `
       <div class="protected-content" style="visibility: hidden">
@@ -135,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkPasscode(e) {
-    console.log("Checking passcode");
     if (e && e.preventDefault) {
       e.preventDefault();
     }
@@ -145,33 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const errorContainer = document.querySelector(".error-container");
     const wrapper = document.querySelector(".wrapper");
 
-    console.log("Input value:", inputVal);
-    console.log("Expected value:", config.passcode.value);
-    console.log(
-      "Types - Input:",
-      typeof parseInt(inputVal),
-      "Expected:",
-      typeof config.passcode.value
-    );
-
-    if (!inputVal || !config.passcode.value) {
-      console.error("Missing input value or passcode configuration");
-      return;
-    }
+    if (!inputVal || !config.passcode.value) return;
 
     const parsedInput = parseInt(inputVal);
     if (parsedInput === config.passcode.value) {
-      console.log("Passcode correct");
       if (wrapper) wrapper.classList.add("show-envelope");
       if (errorMsg) errorMsg.classList.remove("show");
       if (errorContainer) errorContainer.classList.remove("show");
       loadLetterContent();
     } else {
-      console.log("Passcode incorrect", {
-        input: parsedInput,
-        expected: config.passcode.value,
-        match: parsedInput === config.passcode.value,
-      });
       if (errorMsg) {
         errorMsg.innerText = config.passcode.errorMessage;
         errorMsg.classList.add("show");
@@ -185,10 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (submitBtn) {
-    console.log("Setting up submit button handlers");
-
     const handleSubmit = (e) => {
-      console.log("Submit handler called", e.type);
       e.preventDefault();
       e.stopPropagation();
       checkPasscode();
@@ -200,10 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (passcodeInput) {
-    console.log("Setting up passcode input handlers");
     passcodeInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
-        console.log("Enter key pressed");
         e.preventDefault();
         checkPasscode();
       }
@@ -223,7 +165,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (heart) {
     const handleHeartClick = (e) => {
-      console.log("Heart clicked");
       if (!isAnimating && !envelope.classList.contains("open")) {
         e.preventDefault();
         isAnimating = true;
@@ -248,40 +189,23 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     heart.addEventListener("click", handleHeartClick);
-    heart.addEventListener("touchend", (e) => {
-      e.preventDefault();
-      handleHeartClick(e);
-    });
+    heart.addEventListener("touchend", handleHeartClick, { passive: false });
   }
 
   if (closeBtn) {
     const handleClose = (e) => {
-      console.log("Close button clicked");
       e.preventDefault();
-      e.stopPropagation();
-
       if (!isAnimating) {
         isAnimating = true;
-        letter.style.animation =
-          "letterClose 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards";
-
-        const protectedContent = letter.querySelector(".protected-content");
-        if (protectedContent) protectedContent.style.visibility = "hidden";
-
+        letter.style.animation = "letterHide 0.4s ease forwards";
         letter.addEventListener(
           "animationend",
           () => {
-            envelope.classList.remove("open");
             letter.style.visibility = "hidden";
-            letter.style.animation = "";
-            const letterContent = document.getElementById("letter-content");
-            if (letterContent) letterContent.innerHTML = "";
-
-            setTimeout(() => {
-              heart.style.visibility = "visible";
-              heart.style.opacity = "1";
-              isAnimating = false;
-            }, 600);
+            envelope.classList.remove("open");
+            heart.style.visibility = "visible";
+            heart.style.opacity = "1";
+            isAnimating = false;
           },
           { once: true }
         );
@@ -289,18 +213,6 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     closeBtn.addEventListener("click", handleClose);
-    closeBtn.addEventListener("touchend", handleClose);
+    closeBtn.addEventListener("touchend", handleClose, { passive: false });
   }
-
-  if (letter) {
-    letter.addEventListener("click", (e) => {
-      if (e.target !== closeBtn) e.stopPropagation();
-    });
-
-    letter.addEventListener("touchmove", (e) => e.stopPropagation(), {
-      passive: true,
-    });
-  }
-
-  console.log("Script fully initialized");
 });
