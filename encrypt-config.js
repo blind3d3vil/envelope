@@ -1,4 +1,4 @@
-// Encryption key - DO NOT CHANGE ONCE SET
+// Simple XOR encryption
 const ENCRYPTION_KEY = "love-letter-key-2024";
 
 function encrypt(text) {
@@ -11,37 +11,6 @@ function encrypt(text) {
   return Buffer.from(result).toString("base64");
 }
 
-function encryptObject(obj) {
-  return encrypt(JSON.stringify(obj));
-}
-
-const config = {
-  passcode: {
-    value: 3000,
-    placeholder: "Enter number...",
-    errorMessage: "Na Ah, Wrong number Azizam🚫",
-  },
-  letter: {
-    title: "My Love,",
-    paragraphs: [
-      "There are feelings in this world that words can't contain, emotions too vast for any sentence to hold. But if I could try—if I could give even a glimpse of what you mean to me—it would be this: You are my heart, my warmth, my forever.",
-      "Loving you isn't something I choose—it's something that just is. As natural as breathing, as certain as the sun rising each morning. It doesn't begin and end with the days; it doesn't depend on time, distance, or circumstances. It just exists—constant, unshaken, infinite.",
-      "You are the feeling of home, no matter where I stand. You are the quiet in my chaos, the light in my darkest moments. You are the person I'd find in every lifetime, in every world, no matter how many times I had to search.",
-      "And if ever a day comes when you forget just how deeply you are loved, remember this—there is not a single version of my life where you are not everything.",
-    ],
-    signature: {
-      text: "I Love You In Every Universe,",
-      name: "Alireza",
-    },
-  },
-};
-
-// Generate encrypted config
-const encryptedConfig = encryptObject(config);
-console.log("\nEncrypted Config:");
-console.log(encryptedConfig);
-
-// Test decryption
 function decrypt(encoded) {
   try {
     const text = Buffer.from(encoded, "base64").toString();
@@ -59,16 +28,32 @@ function decrypt(encoded) {
   }
 }
 
-function decryptObject(encoded) {
-  try {
-    return JSON.parse(decrypt(encoded));
-  } catch (e) {
-    console.error("Object decryption failed:", e);
-    return null;
-  }
-}
+// Configuration object
+const config = {
+  passcode: {
+    value: 3000,
+    placeholder: "Enter number...",
+    errorMessage: "Na Ah, Wrong number Azizam🚫",
+  },
+  letter: {
+    title: "My Love,",
+    paragraphs: [
+      "Every moment with you feels like a beautiful dream come true. Your smile brightens my darkest days, and your love gives me strength I never knew I had.",
+      "In you, I found not just a partner, but my best friend, my confidant, and my soulmate. You understand me in ways no one else does, and you love me despite my flaws.",
+      "I cherish every laugh we share, every tear we've wiped away, and every memory we've created together. You make my life complete in ways I never imagined possible.",
+      "You are my today and all of my tomorrows. I promise to love you more with each passing day, to support you in all your dreams, and to be by your side through every challenge life brings.",
+    ],
+    signature: {
+      text: "I Love You In Every Universe,",
+      name: "Alireza",
+    },
+  },
+};
+
+// Encrypt the config
+const encryptedConfig = encrypt(JSON.stringify(config));
+console.log("Encrypted config:", encryptedConfig);
 
 // Verify decryption works
-const decryptedConfig = decryptObject(encryptedConfig);
-console.log("\nVerifying decryption works:");
-console.log(JSON.stringify(decryptedConfig, null, 2));
+const decryptedConfig = decrypt(encryptedConfig);
+console.log("\nDecrypted config:", JSON.parse(decryptedConfig));

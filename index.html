@@ -48,7 +48,19 @@
     </div>
 
     <script>
+      // Simple XOR encryption
       const ENCRYPTION_KEY = "love-letter-key-2024";
+
+      function encrypt(text) {
+        let result = "";
+        for (let i = 0; i < text.length; i++) {
+          const charCode =
+            text.charCodeAt(i) ^
+            ENCRYPTION_KEY.charCodeAt(i % ENCRYPTION_KEY.length);
+          result += String.fromCharCode(charCode);
+        }
+        return btoa(result);
+      }
 
       function decrypt(encoded) {
         try {
@@ -67,33 +79,35 @@
         }
       }
 
-      function decryptObject(encoded) {
-        try {
-          return JSON.parse(decrypt(encoded));
-        } catch (e) {
-          console.error("Object decryption failed:", e);
-          return null;
-        }
-      }
-
+      // Your encrypted configuration
       const encryptedConfig =
         "F00GBF4fBhsQAFAXEEcPTF5FVxZWXEZVHUBHBBgEEUgDChVJV0IQDk4qGBFIHkUaAQgQSBlLVwMQHBBRHh0ZF2AJFgcVAhcPUUc3TBJxWhhMOAQKQwtFGgEIEEgZRThXW0pTWfCkm4RUGAFOCREAERdfSV8CD0ZZRlgJTUxHYBVFOBsTFwFJSVtdU0JTUx4OBg1eTl8vVjEaSBkAWUxAVRJSCQoaDEMLFlQdC1JZAwwKDUVfQFgITwINTBhFAxsXFl5LBhhDFUQSVwMBAgREAklUEQgdWQIKF14SRF1bTBkXFllMAxsGRRNDEkUKSFxEV1oPClYRQkwNGxgBXA0pEA0NW1YSfUwMGRBBCEUABhzigaZEDUUwDVFfR1gITxEMWwlFEQIAHA0KRR5BW11CRwlPGQMNGw0VAEULQh5FFEhTXhJAA08bAOKAuQURVAMKB0EPRRtIEkRaXR9VVjxCGUUVBgBSQBJFEUhTQkYYTAIPRVoNFxkADV4NBhxZS11CV0IJHVhHAU4pGwIMHEpLHBZYEllBWksbVhZCAQAAHAwcSkssWU5aX11HCeKBux8RCh9FBxsIF1kDDBdKEkRaVRhPHBBeGEUdB0tSbBhFF0xGRUBVAE8XFg0OFxEVERpEBQJVDVNDElcJHQIERAJFFQdFBkUORQpYXBBAXR8GGAINCQQXHEUfQhkLEENVHhJ9GE8SCkgfC1MARRBIDAwXDVNeVhQJARJFWgURHFQRGkhLARhUQQsSXRhPEgpIHwtTAEUWSBsAF0kSX1wUGAYbAAFMAR0HERNDCABVDV1CElcFHRUQQB8RFRoGF15FRTBZElpHRxhPEx1EHxEH4oGgBh1DGBEYQ0YcEkECHB4ERgkLWFQMHEsCCxBZVx4QGE42GRANDRcRVBEaSEsDHEheWVxTTAAQRUUDCBFYRRxCSwgYWUZVQBQbBxMXSEwsVAcRE0MPS1l0XUUSVR4KVhFFCUUFAQwXWUsMFw1fSRJXBA4ZFgFMERwRRR5EDA0NDVteElkVTxIEXwcABwBFH0IGABdZQR4SbQMaVgRfCUUAHABSXQ4XCkJcEHsTCE8QDEMIRR0aRRdbDhcADV5ZVFEYBhsAAUwMGlQABEgZHFlaXUJeUEBPGAoNAQQAAAAADQMKDg1fUVxNTBsfCEgfRT1UDRNJSxEWDUFVU0YPB1hHAU4kGhBFG0tLAA9IQBBTFAgOD0VOAwgRB0UFRQ4LWVRdRRJSAx0RAFlMDwEHEVJFBBJZSVdVQlgVTw8KWEwEBhFFHkIdAB0BEkJXWQkCFABfTBEcHRbigaZZAwALSBJZQRQCAAJFTEwWHRoCHkhLExxfQVldWkwAEEVAFUUYHQMXDRwNHF9XEEtbGU8XF0hMCxsARRdbDhcAWVpZXFNCTStJDx8MExoEBlgZAFsXSRJGURQbVF8PJUU4GxMXDTIKDA17XhJxGgoEHA05Cx0CAABeDklbARBeU1kJTUxHbAAMBhEfEw8WGAQ=";
 
-      const config = decryptObject(encryptedConfig) || {
-        passcode: {
-          value: 0,
-          placeholder: "Enter number...",
-          errorMessage: "Try again!",
-        },
-        letter: {
-          title: "",
-          paragraphs: [""],
-          signature: { text: "", name: "" },
-        },
-      };
+      // Decrypt and parse the config
+      let config;
+      try {
+        const decrypted = decrypt(encryptedConfig);
+        config = JSON.parse(decrypted);
+      } catch (e) {
+        console.error("Failed to decrypt config:", e);
+        config = {
+          passcode: {
+            value: 0,
+            placeholder: "Enter number...",
+            errorMessage: "Try again!",
+          },
+          letter: {
+            title: "",
+            paragraphs: [""],
+            signature: { text: "", name: "" },
+          },
+        };
+      }
 
+      // Make config globally available
       window.config = config;
 
+      // Define getConfig function
       window.getConfig = function () {
         try {
           return JSON.parse(JSON.stringify(config));
