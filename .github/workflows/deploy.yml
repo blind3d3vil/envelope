@@ -27,7 +27,48 @@ jobs:
       - name: Create config.js from secrets
         run: |
           mkdir -p js
-          echo '${{ secrets.CONFIG_JS }}' > js/config.js
+          cat > js/config.js << 'EOL'
+          // Configuration loaded from GitHub secrets
+          const config = {
+            passcode: {
+              value: ${{ secrets.PASSCODE_VALUE }},
+              placeholder: "${{ secrets.PASSCODE_PLACEHOLDER }}",
+              errorMessage: "${{ secrets.PASSCODE_ERROR }}",
+            },
+            letter: {
+              title: "${{ secrets.LETTER_TITLE }}",
+              paragraphs: ${{ secrets.LETTER_PARAGRAPHS }},
+              signature: {
+                text: "${{ secrets.LETTER_SIGNATURE_TEXT }}",
+                name: "${{ secrets.LETTER_SIGNATURE_NAME }}",
+              },
+            },
+          };
+
+          // Make config globally available
+          window.config = config;
+
+          // Define getConfig function
+          window.getConfig = function () {
+            try {
+              return JSON.parse(JSON.stringify(config));
+            } catch (error) {
+              console.error("Error in getConfig:", error);
+              return {
+                passcode: {
+                  value: 0,
+                  placeholder: "Enter number...",
+                  errorMessage: "Try again!",
+                },
+                letter: {
+                  title: "",
+                  paragraphs: [""],
+                  signature: { text: "", name: "" },
+                },
+              };
+            }
+          };
+          EOL
           echo "Config file created successfully"
 
       - name: Upload artifact
