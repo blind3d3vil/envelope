@@ -1,6 +1,6 @@
 const config = {
   passcode: {
-    value: 730,
+    value: 3000,
     placeholder: "Enter number...",
     errorMessage: "Na Ah, Wrong number Azizam🚫",
   },
