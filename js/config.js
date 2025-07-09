@@ -8,9 +8,7 @@ const config = {
     title: "My lovely notes,",
     paragraphs: [
       "Today marks two years.
-Two years since this story began — not just a relationship, but the unfolding of something rare and entirely ours.
-
-I wish more than anything I could be looking into your eyes right now, touching your hand, letting the silence between us say everything we already feel. But even though we’re apart today, I feel you in everything. In the rhythm of my heartbeat. In the air I breathe. In the empty space beside me that only your presence can fill.",
+Two years since this story began not just a relationship, but the unfolding of something rare and entirely ours.I wish more than anything I could be looking into your eyes right now, touching your hand, letting the silence between us say everything we already feel. But even though we’re apart today, I feel you in everything. In the rhythm of my heartbeat. In the air I breathe. In the empty space beside me that only your presence can fill.",
       "Loving you isn’t something I chose. It’s something my soul decided the first time it felt yours.
 You are not a part of my life you are its meaning. You’re in the way I think, the way I dream, the way I carry love now. Before you, I didn’t know this kind of depth existed.
 We’ve had late-night talks and early morning kisses, playful teasing and deep silence. We've had hard days. We’ve had passion and comfort, fire and softness — and every version of us has only made me more certain:
