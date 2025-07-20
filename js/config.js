@@ -19,10 +19,9 @@ const config = {
   },
 };
 
-window.config = config;
 window.CONFIG = config;
 
-function getConfig() {
+window.getConfig = function () {
   try {
     return JSON.parse(JSON.stringify(config));
   } catch (error) {
@@ -40,4 +39,4 @@ function getConfig() {
       },
     };
   }
-}
+};
